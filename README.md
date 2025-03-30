@@ -1,2 +1,2 @@
-# bballsim
+# Basketball Simulator
 A basketball simulator
