@@ -2,7 +2,7 @@ const { Client } = require('pg');
 //const pool = new Client.Pool();
  
 const client = new Client({
-    user: 'pgadmin_user',
+    user: 'ben_admin',
     host: 'localhost',
     database: 'bbsim',
     password: 'new_password',
