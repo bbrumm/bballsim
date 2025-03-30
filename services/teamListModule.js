@@ -5,9 +5,6 @@ const client = db.client;
 module.exports.showExample = showExample;
 
 async function showExample(req, res) {
-    //console.log('show example here');
-    //let teamList = 'some new team';
-
     let teamListResults = await loadTeamList();
 
     console.log('Team List: ', teamListResults); 
