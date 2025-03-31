@@ -52,7 +52,11 @@ async function showResultsOfMatchSim(req, res) {
 
     res.render('match_sim', {
         twoTeams: twoTeamsResults,
-        resultOfInsert: resultOfInsert
+        resultOfInsert: resultOfInsert,
+        winningTeamID: winningTeamID,
+        losingTeamID: losingTeamID,
+        winningTeamScore: winningTeamScore,
+        losingTeamScore: losingTeamScore
     });
 
 }
