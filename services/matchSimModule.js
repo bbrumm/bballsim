@@ -29,8 +29,10 @@ async function showMatchSim(req, res) {
 async function showResultsOfMatchSim(req, res) {
     console.log('Request Body after Submit: ', req.body);
 
-    team1Score = 50;
-    team2Score = 25;
+    team1Score = await calculateTeamScore();
+    team2Score = await calculateTeamScore();
+
+    console.log('Match scores: ' + team1Score + ' vs ' + team2Score);
 
     //Calculate winner of match
     //winningTeamID = await calculateMatchWinner(req.body.team1ID, req.body.team2ID);
@@ -65,7 +67,11 @@ const loadTwoTeams = async () => {
     }
 }
 
-
+async function calculateTeamScore() {
+    min = 70;
+    max = 140;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 async function calculateMatchWinner(req, team1Score, team2Score) {
     //randomInt = await getRandomInt(10);
