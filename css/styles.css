@@ -1,0 +1,32 @@
+h1 {
+    text-align:center;
+}
+
+
+.bodyStyle {
+    font-family: Montserrat, sans-serif;
+    background-color: #d5d5d5;
+    color: #212a28;
+}
+
+.standingsTable {
+    width:100%;
+  }
+  
+.standingsTable td {
+    border: 1px grey solid;
+    padding: 10px;
+}
+
+.standingsTable th {
+    border: 1px grey solid;
+    background-color: #EEEEEE;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.linkBar {
+    background-color: #f4f4f4;
+    color: #384D48;
+    padding: 5px;
+  }

@@ -1,23 +1,30 @@
-<html>
-    <a href="/">Standings</a> - 
-    <a href="/match_sim">Match Sim</a>
-    <body>
-        <h1>Match Sim</h1>
-    </body>
+<%- include('header') -%>
 
-    <% if (resultOfInsert == true) { %>
-        <p>Match result saved.</p>
-        <p>Team <%= winningTeamID %> defeated Team <%= losingTeamID %>: <%= winningTeamScore %>-<%= losingTeamScore %></p>
-        <br />
-    <% } %>
+<%- include('links') -%>
 
-    <form class="" action="/match_sim_result" method="post" name="matchSimForm" id="matchSimForm">
-        <p>Team 1: <%= twoTeams[0].team_name %></p>
-        <p>Team 2: <%= twoTeams[1].team_name %></p>
-        <button type="submit" id="sim_match" name="sim_match" value="sim" class="btn btn-primary btn-block mainButton">
-            Simulate Match
-        </button>
-        <input type="hidden" name="team1ID" value="<%= twoTeams[0].id %>" />
-        <input type="hidden" name="team2ID" value="<%= twoTeams[1].id %>" />
-    </form>
+<body class="bodyStyle">
+    <h1>Match Sim</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-8">
+
+            <% if (resultOfInsert == true) { %>
+                <p>Match result saved.</p>
+                <p>Team <%= winningTeamID %> defeated Team <%= losingTeamID %>: <%= winningTeamScore %>-<%= losingTeamScore %></p>
+                <br />
+            <% } %>
+
+            <form class="" action="/match_sim_result" method="post" name="matchSimForm" id="matchSimForm">
+                <p>Team 1: <%= twoTeams[0].team_name %></p>
+                <p>Team 2: <%= twoTeams[1].team_name %></p>
+                <button type="submit" id="sim_match" name="sim_match" value="sim" class="btn btn-primary btn-block mainButton">
+                    Simulate Match
+                </button>
+                <input type="hidden" name="team1ID" value="<%= twoTeams[0].id %>" />
+                <input type="hidden" name="team2ID" value="<%= twoTeams[1].id %>" />
+            </form>
+
+        </div>
+    </div>
+</body>
 </html>

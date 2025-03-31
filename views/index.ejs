@@ -1,31 +1,34 @@
-<html>
-    <a href="/">Standings</a> - 
-    <a href="/match_sim">Match Sim</a>
-    <body>
-        <h1>Standings</h1>
-        <table>
-            <thead>
-                <th>Team</th>
-                <th>Wins</th>
-                <th>Losses</th>
-                <th>Points For</th>
-                <th>Points Against</th>
-            </thead>
-            <tbody>
-                <% for(var i=0; i < teamList.length; i++) { %>
-                    <tr>
-                        <td><%= teamList[i].team_name %></td>
-                        <td><%= teamList[i].wins %></td>
-                        <td><%= teamList[i].losses %></td>
-                        <td><%= teamList[i].points_for %></td>
-                        <td><%= teamList[i].points_against %></td>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
-        <ul>
-            
-        </ul>
+<%- include('header') -%>
+
+<%- include('links') -%>
+<body class="bodyStyle">
+    <h1>Standings</h1>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <table class="standingsTable">
+                    <thead>
+                        <th>Team</th>
+                        <th>Wins</th>
+                        <th>Losses</th>
+                        <th>Points For</th>
+                        <th>Points Against</th>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i < teamList.length; i++) { %>
+                            <tr>
+                                <td><%= teamList[i].team_name %></td>
+                                <td><%= teamList[i].wins %></td>
+                                <td><%= teamList[i].losses %></td>
+                                <td><%= teamList[i].points_for %></td>
+                                <td><%= teamList[i].points_against %></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
