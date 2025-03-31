@@ -25,8 +25,15 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 app.get('/', (req, res) => {
-    //res.send('Hello World!');
-    teamListModule.showStandings(req, res);
+  homeModule.showHome(req, res);
+});
+
+app.get('/standings/', (req, res) => {
+  teamListModule.showStandings(req, res);
+});
+
+app.get('/standings_conf/', (req, res) => {
+  teamListModule.showStandingsByConf(req, res);
 });
 
 app.get('/home/', (req, res) => {

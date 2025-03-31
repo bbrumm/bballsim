@@ -3,9 +3,10 @@ const client = db.client;
 const commonDataLookups = require('./commonDataLookups.js');
 
 module.exports.showStandings = showStandings;
+module.exports.showStandingsByConf = showStandingsByConf;
 
 async function showStandings(req, res) {
-    let teamListResults = await loadTeamList();
+    teamListResults = await loadTeamList();
 
     gameParameters = await commonDataLookups.lookupChosenTeamID();
     chosenTeamID = gameParameters[0].team_id_chosen;
@@ -14,7 +15,23 @@ async function showStandings(req, res) {
     let teamList = teamListResults;
 
     res.render('index', {
+        isOverall: true,
         teamList: teamList,
+        chosenTeamID: chosenTeamID
+    });
+}
+
+async function showStandingsByConf(req, res) {
+    standingsEast = await lookupStandings(1);
+    standingsWest = await lookupStandings(2);
+
+    gameParameters = await commonDataLookups.lookupChosenTeamID();
+    chosenTeamID = gameParameters[0].team_id_chosen;
+
+    res.render('index', {
+        isOverall: false,
+        standingsEast: standingsEast,
+        standingsWest: standingsWest,
         chosenTeamID: chosenTeamID
     });
 }
@@ -32,11 +49,34 @@ const loadTeamList = async () => {
         'wins, ' +
         'losses, ' +
         'points_for, ' +
-        'points_against ' +
+        'points_against, ' +
+        'conference_name ' +
         'FROM standings ' +
         'ORDER BY wins DESC, losses ASC, points_for DESC, points_against ASC;';
     try {
         const res = await client.query(queryString);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function lookupStandings(conference_id) {
+    queryString = 'SELECT ' +
+        'pos, ' +
+        'id, ' +
+        'team_name, ' +
+        'team_rating, ' +
+        'wins, ' +
+        'losses, ' +
+        'points_for, ' +
+        'points_against, ' +
+        'conference_name ' +
+        'FROM standings ' +
+        'WHERE conference_id = $1 ' +
+        'ORDER BY wins DESC, losses ASC, points_for DESC, points_against ASC;';
+    try {
+        const res = await client.query(queryString, [conference_id]);
         return res.rows;
     } catch (error) {
         console.log(error)

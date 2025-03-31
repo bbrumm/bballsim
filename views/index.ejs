@@ -6,10 +6,21 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-8">
+                <p class="text-center"><a href="/standings/">Overall</a> - <a href="/standings_conf/">By Conference</a></p>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-8">
+
+                <% if(isOverall == true) { %>
+
                 <table class="dataTable">
                     <thead>
                         <th>Pos.</th>
                         <th>Team</th>
+                        <th>Conference</th>
                         <th>Rating</th>
                         <th>Wins</th>
                         <th>Losses</th>
@@ -25,6 +36,7 @@
                             <% } %>
                                 <td><%= i + 1 %></td>
                                 <td><a href='/team/?teamID=<%= teamList[i].id %>'><%= teamList[i].team_name %></a></td>
+                                <td><%= teamList[i].conference_name %></td>
                                 <td><%= teamList[i].team_rating %></td>
                                 <td><%= teamList[i].wins %></td>
                                 <td><%= teamList[i].losses %></td>
@@ -34,6 +46,69 @@
                         <% } %>
                     </tbody>
                 </table>
+
+                <% } else { %>
+                <h2>Eastern Conference</h2>
+                <table class="dataTable">
+                    <thead>
+                        <th>Pos.</th>
+                        <th>Team</th>
+                        <th>Rating</th>
+                        <th>Wins</th>
+                        <th>Losses</th>
+                        <th>Points For</th>
+                        <th>Points Against</th>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i < standingsEast.length; i++) { %>
+                            <% if (chosenTeamID == standingsEast[i].id) { %>
+                                <tr class="rowIsForChosenTeam">
+                            <% } else { %>
+                                <tr>
+                            <% } %>
+                                <td><%= i + 1 %></td>
+                                <td><a href='/team/?teamID=<%= standingsEast[i].id %>'><%= standingsEast[i].team_name %></a></td>
+                                <td><%= standingsEast[i].team_rating %></td>
+                                <td><%= standingsEast[i].wins %></td>
+                                <td><%= standingsEast[i].losses %></td>
+                                <td><%= standingsEast[i].points_for %></td>
+                                <td><%= standingsEast[i].points_against %></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <br />
+                <h2>Western Conference</h2>
+                <table class="dataTable">
+                    <thead>
+                        <th>Pos.</th>
+                        <th>Team</th>
+                        <th>Rating</th>
+                        <th>Wins</th>
+                        <th>Losses</th>
+                        <th>Points For</th>
+                        <th>Points Against</th>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i < standingsWest.length; i++) { %>
+                            <% if (chosenTeamID == standingsWest[i].id) { %>
+                                <tr class="rowIsForChosenTeam">
+                            <% } else { %>
+                                <tr>
+                            <% } %>
+                                <td><%= i + 1 %></td>
+                                <td><a href='/team/?teamID=<%= standingsEast[i].id %>'><%= standingsWest[i].team_name %></a></td>
+                                <td><%= standingsWest[i].team_rating %></td>
+                                <td><%= standingsWest[i].wins %></td>
+                                <td><%= standingsWest[i].losses %></td>
+                                <td><%= standingsWest[i].points_for %></td>
+                                <td><%= standingsWest[i].points_against %></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+
+                <% } %>
             </div>
         </div>
     </div>

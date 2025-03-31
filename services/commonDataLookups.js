@@ -11,7 +11,10 @@ module.exports.lookupNextMatchForTeam = lookupNextMatchForTeam;
 
 
 async function lookupTeamDetails(teamID) {
-    queryString = 'SELECT team_name, team_rating FROM team WHERE id = $1';
+    queryString = 'SELECT t.team_name, t.team_rating, c.conference_name ' +
+    'FROM team t ' +
+    'INNER JOIN conference c ON t.conference_id = c.id ' +
+    'WHERE t.id = $1';
     try {
         const res = await client.query(queryString, [teamID]);
         return res.rows;
