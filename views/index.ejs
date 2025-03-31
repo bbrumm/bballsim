@@ -13,8 +13,8 @@
                 <% for(var i=0; i < teamList.length; i++) { %>
                     <tr>
                         <td><%= teamList[i].team_name %></td>
-                        <td>0</td>
-                        <td>0</td>
+                        <td><%= teamList[i].wins %></td>
+                        <td><%= teamList[i].losses %></td>
                     </tr>
                 <% } %>
             </tbody>

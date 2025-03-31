@@ -2,12 +2,24 @@
 const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
+const session = require("express-session");
 const port = 8000;
 
 const teamListModule = require(__dirname + "/services/teamListModule");
 const matchSimModule = require(__dirname + "/services/matchSimModule");
 
 app.set('view engine', 'ejs');
+
+app.use(session({
+    secret: 'keyboard cat'
+  }));
+
+//This USE command is required in order to load the CSS file
+app.use(express.static(__dirname));
+
+//These two commands are used so that Node can process form submissions
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 app.get('/', (req, res) => {
     //res.send('Hello World!');
@@ -16,6 +28,10 @@ app.get('/', (req, res) => {
 
 app.get('/match_sim', (req, res) => {
     matchSimModule.showMatchSim(req, res);
+});
+
+app.post('/match_sim_result', (req, res) => {
+    matchSimModule.showResultsOfMatchSim(req, res);
 });
 
 
