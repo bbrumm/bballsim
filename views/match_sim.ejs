@@ -15,8 +15,8 @@
             <% } %>
 
             <form class="" action="/match_sim_result" method="post" name="matchSimForm" id="matchSimForm">
-                <p>Team 1: <%= twoTeams[0].team_name %></p>
-                <p>Team 2: <%= twoTeams[1].team_name %></p>
+                <p>Team 1: <%= twoTeams[0].team_name %> (<%= twoTeams[0].team_rating %>)</p>
+                <p>Team 2: <%= twoTeams[1].team_name %> (<%= twoTeams[1].team_rating %>)</p>
                 <button type="submit" id="sim_match" name="sim_match" value="sim" class="btn btn-primary btn-block mainButton">
                     Simulate Match
                 </button>

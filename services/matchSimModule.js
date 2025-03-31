@@ -68,7 +68,7 @@ async function showResultsOfMatchSim(req, res) {
 }
 
 const loadTwoTeams = async () => {
-    queryString = 'SELECT id, team_name FROM team ORDER BY RANDOM() LIMIT 2';
+    queryString = 'SELECT id, team_name, team_rating FROM team ORDER BY RANDOM() LIMIT 2';
     try {
         const res = await client.query(queryString);
         return res.rows;
