@@ -21,34 +21,34 @@ async function showMatchSim(req, res) {
     let twoTeamsResults = await loadTwoTeams();
 
     res.render('match_sim', {
-        twoTeams: twoTeamsResults
+        twoTeams: twoTeamsResults,
+        resultOfInsert: false
     });
 }
 
 async function showResultsOfMatchSim(req, res) {
     console.log('Request Body after Submit: ', req.body);
 
-    //Calculate winner of match
-    winningTeamID = await calculateMatchWinner(req.body.team1ID, req.body.team2ID);
+    team1Score = 50;
+    team2Score = 25;
 
-    //Calculate loser of match
-    if (winningTeamID == req.body.team1ID) {
-        losingTeamID = req.body.team2ID;
-    } else {
-        losingTeamID = req.body.team1ID;
-    }
+    //Calculate winner of match
+    //winningTeamID = await calculateMatchWinner(req.body.team1ID, req.body.team2ID);
+    winningTeamID = await calculateMatchWinner(req, team1Score, team2Score);
+    losingTeamID = await calculateMatchLoser(req, winningTeamID);
 
     console.log('Winning team ID: ' + winningTeamID);
     console.log('Losing team ID: ' + losingTeamID);
 
     //Store the result of the match
-    storeMatchSimResult(winningTeamID, losingTeamID);
-    console.log('Match result stored');
+    resultOfInsert = await storeMatchSimResult(winningTeamID, losingTeamID);
+    console.log('Match result inserted, response is ', resultOfInsert);
 
     let twoTeamsResults = await loadTwoTeams();
 
     res.render('match_sim', {
-        twoTeams: twoTeamsResults
+        twoTeams: twoTeamsResults,
+        resultOfInsert: resultOfInsert
     });
 
 }
@@ -65,18 +65,24 @@ const loadTwoTeams = async () => {
 
 
 
-async function calculateMatchWinner(teamID1, teamID2) {
-    
-    randomInt = await getRandomInt(10);
-    console.log('Random Int: ' + randomInt);
-    if (randomInt % 2 == 0) {
+async function calculateMatchWinner(req, team1Score, team2Score) {
+    //randomInt = await getRandomInt(10);
+    //console.log('Random Int: ' + randomInt);
+    if (team1Score >= team2Score) {
         console.log('Team 1 wins');
-        return teamID1;
+        return req.body.team1ID;
     } else {
         console.log('Team 2 wins');
-        return teamID2;
+        return req.body.team2ID;
     }
-    
+}
+
+async function calculateMatchLoser(req, winningTeamID) {
+    if (winningTeamID == req.body.team1ID) {
+        return req.body.team2ID;
+    } else {
+        return req.body.team1ID;
+    }
 }
 
 async function getRandomInt(max) {
@@ -89,18 +95,19 @@ async function storeMatchSimResult(winningTeamID, losingTeamID) {
     console.log("Query string: " + queryString);
     try {
         result = await client.query(queryString, [winningTeamID, losingTeamID]);
+        return await isInsertSuccessful(result);
     } catch (error) {
         console.error(error.stack);
+        return false;
     }
 }
 
-
-function determineButtonThatWasClicked(requestBody) {
-    if (requestBody == undefined) {
-        return false;
-    } else if ("sim_match" in requestBody) {
+async function isInsertSuccessful(insertQueryResult) {
+    if (insertQueryResult.rowCount == 1) {
         return true;
     } else {
         return false;
     }
 }
+
+

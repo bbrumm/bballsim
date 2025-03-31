@@ -5,6 +5,10 @@
         <h1>Match Sim</h1>
     </body>
 
+    <% if (resultOfInsert == true) { %>
+        <p>Match result saved.</p>
+    <% } %>
+
     <form class="" action="/match_sim_result" method="post" name="matchSimForm" id="matchSimForm">
         <p>Team 1: <%= twoTeams[0].team_name %></p>
         <p>Team 2: <%= twoTeams[1].team_name %></p>
