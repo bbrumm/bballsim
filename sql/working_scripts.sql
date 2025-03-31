@@ -160,3 +160,69 @@ FROM player p
 INNER JOIN team t ON p.team_id = t.id
 WHERE t.id = 28
 ORDER BY p.rating_ovr DESC;
+
+/*
+Calculate the new overall rating
+Average of the top 8 player individual OVR ratings
+*/
+
+SELECT
+t.id AS team_id,
+p.id AS player_id,
+p.rating_ovr,
+ROW_NUMBER() OVER (
+	PARTITION BY t.id
+	ORDER BY p.rating_ovr DESC
+) AS player_order
+FROM player p
+INNER JOIN team t ON p.team_id = t.id
+ORDER BY t.id ASC, p.rating_ovr DESC; 
+
+
+
+SELECT
+team_id,
+player_id,
+rating_ovr
+FROM (
+	SELECT
+	t.id AS team_id,
+	p.id AS player_id,
+	p.rating_ovr,
+	ROW_NUMBER() OVER (
+		PARTITION BY t.id
+		ORDER BY p.rating_ovr DESC
+	) AS player_order
+	FROM player p
+	INNER JOIN team t ON p.team_id = t.id
+	ORDER BY t.id ASC, p.rating_ovr DESC
+) s
+WHERE s.player_order <= 8;
+
+
+
+/*
+ * 
+ * Find the average rating of the top 8 players for each team
+ * This is the source of the new team ratings
+ */
+SELECT
+team_id,
+ROUND(AVG(rating_ovr), 0) AS new_team_rating
+FROM (
+	SELECT
+	t.id AS team_id,
+	p.id AS player_id,
+	p.rating_ovr,
+	ROW_NUMBER() OVER (
+		PARTITION BY t.id
+		ORDER BY p.rating_ovr DESC
+	) AS player_order
+	FROM player p
+	INNER JOIN team t ON p.team_id = t.id
+	ORDER BY t.id ASC, p.rating_ovr DESC
+) s
+WHERE s.player_order <= 8
+GROUP BY team_id;
+
+
