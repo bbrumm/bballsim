@@ -1,6 +1,28 @@
-<h1>Team List</h1>
-<ul>
-    <% for(var i=0; i < teamList.length; i++) { %>
-        <li><%= teamList[i].team_name %></li>
-    <% } %>
-</ul>
+<html>
+    <body>
+
+
+    
+        <h1>Standings</h1>
+        <table>
+            <thead>
+                <th>Team</th>
+                <th>Wins</th>
+                <th>Losses</th>
+            </thead>
+            <tbody>
+                <% for(var i=0; i < teamList.length; i++) { %>
+                    <tr>
+                        <td><%= teamList[i].team_name %></td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <ul>
+            
+        </ul>
+
+</body>
+</html>
