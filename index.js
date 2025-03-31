@@ -8,6 +8,7 @@ const port = 8000;
 const teamListModule = require(__dirname + "/services/teamListModule");
 const matchSimModule = require(__dirname + "/services/matchSimModule");
 const teamModule = require(__dirname + "/services/teamModule");
+const statsModule = require(__dirname + "/services/statsModule");
 
 app.set('view engine', 'ejs');
 
@@ -37,6 +38,10 @@ app.post('/match_sim_result', (req, res) => {
 
 app.get('/team/', (req, res) => {
   teamModule.showTeamPage(req, res);
+});
+
+app.get('/stats/', (req, res) => {
+  statsModule.showStats(req, res);
 });
 
 

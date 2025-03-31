@@ -70,10 +70,13 @@ async function lookupPlayerDetailsForTeam(teamID) {
         'p.id, ' +
         'p.first_name, ' +
         'p.last_name, ' +
-        'p.rating_ovr ' +
+        'p.rating_ovr, ' +
+        'SUM(s.points_scored) AS points_scored ' +
         'FROM player p ' +
         'INNER JOIN team t ON p.team_id = t.id ' +
+        'LEFT JOIN player_match_stats s ON p.id = s.player_id ' +
         'WHERE t.id = $1 ' +
+        'GROUP BY p.id, p.first_name, p.last_name, p.rating_ovr ' +
         'ORDER BY p.rating_ovr DESC;';
     try {
         const res = await client.query(queryString, [teamID]);
