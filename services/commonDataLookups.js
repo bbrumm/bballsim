@@ -6,6 +6,7 @@ module.exports.lookupMatchResultsForTeam = lookupMatchResultsForTeam;
 module.exports.lookupPlayerDetailsForTeam = lookupPlayerDetailsForTeam;
 module.exports.lookupChosenTeamID = lookupChosenTeamID;
 module.exports.lookupOverallRecordForTeam = lookupOverallRecordForTeam;
+module.exports.lookupNextMatchForTeam = lookupNextMatchForTeam;
 
 
 
@@ -92,6 +93,7 @@ async function lookupOverallRecordForTeam(teamID) {
     'pos, ' +
     'id, ' +
     'team_name, ' +
+    'team_rating, ' +
     'wins, ' +
     'losses, ' +
     'points_for, ' +
@@ -101,7 +103,31 @@ async function lookupOverallRecordForTeam(teamID) {
     'ORDER BY wins DESC, losses ASC, points_for DESC, points_against ASC;';
     try {
         const res = await client.query(queryString, [teamID]);
-        console.log('Overall position result: ', res.rows);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function lookupNextMatchForTeam(teamID) {
+    queryString = queryString = 'SELECT ' + 
+        'mr.id AS match_result_id, ' +
+        'mr.team1_id, ' +
+        't1.team_name AS team1_name, ' +
+        'mr.team2_id, ' +
+        't2.team_name AS team2_name ' +
+        'FROM match_result mr ' +
+        'INNER JOIN team t1 ON mr.team1_id = t1.id ' +
+        'INNER JOIN team t2 ON mr.team2_id = t2.id ' +
+        'WHERE mr.id = ( ' +
+            'SELECT MIN(id) ' +
+            'FROM match_result ' +
+            'WHERE winning_team_id IS NULL ' +
+            'AND (team1_id = $1 OR team2_id = $1) ' +
+        ');';
+    try {
+        const res = await client.query(queryString, [teamID]);
+        console.log('Next match: ', res.rows);
         return res.rows;
     } catch (error) {
         console.log(error)

@@ -1,23 +1,33 @@
 const db = require('./db.js');
-
 const client = db.client;
+
+const commonDataLookups = require('./commonDataLookups.js');
 
 module.exports.showMatchSim = showMatchSim;
 module.exports.showResultsOfMatchSim = showResultsOfMatchSim;
 
 async function showMatchSim(req, res) {
+    //This is shown if no match is simulated
+
     console.log('Request Body for Show: ', req.body);
+
+    gameParameters = await commonDataLookups.lookupChosenTeamID();
+    chosenTeamID = gameParameters[0].team_id_chosen;
 
     //Show teams regardless of button being clicked
     let nextMatchDetails = await loadNextMatch();
+    isNextMatchIncludeChosenTeam = await calculateIsNextMatchIncludeChosenTeam(chosenTeamID, nextMatchDetails);
 
     res.render('match_sim', {
         nextMatchDetails: nextMatchDetails,
-        resultOfInsert: false
+        resultOfInsert: false,
+        isNextMatchIncludeChosenTeam: isNextMatchIncludeChosenTeam
     });
 }
 
 async function showResultsOfMatchSim(req, res) {
+    //This is shown if a match simulation was just completed
+
     console.log('Request Body after Submit: ', req.body);
 
     //Calculate player scores
@@ -53,6 +63,7 @@ async function showResultsOfMatchSim(req, res) {
     console.log('Match result inserted, response is ', resultOfInsert);
 
     let nextMatchDetails = await loadNextMatch();
+    isNextMatchIncludeChosenTeam = await calculateIsNextMatchIncludeChosenTeam(chosenTeamID, nextMatchDetails);
 
     res.render('match_sim', {
         nextMatchDetails: nextMatchDetails,
@@ -62,7 +73,8 @@ async function showResultsOfMatchSim(req, res) {
         winningTeamScore: winningTeamScore,
         losingTeamScore: losingTeamScore,
         winningTeamName: winningTeamName,
-        losingTeamName: losingTeamName
+        losingTeamName: losingTeamName,
+        isNextMatchIncludeChosenTeam: isNextMatchIncludeChosenTeam
     });
 
 }
@@ -290,4 +302,11 @@ async function isInsertSuccessful(insertQueryResult) {
     }
 }
 
-
+async function calculateIsNextMatchIncludeChosenTeam(chosenTeamID, nextMatchDetails) {
+    if (nextMatchDetails[0].team1_id == chosenTeamID ||
+        nextMatchDetails[0].team2_id == chosenTeamID) {   
+        return true;
+    } else {
+        return false;
+    }
+}

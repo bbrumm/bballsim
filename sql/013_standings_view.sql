@@ -1,8 +1,11 @@
+DROP VIEW standings;
+
 CREATE VIEW standings AS
 SELECT
 pos,
 id,
 team_name,
+team_rating,
 wins,
 losses,
 points_for,
@@ -13,6 +16,7 @@ FROM
 	ROW_NUMBER() OVER(ORDER BY SUM(wins) DESC, SUM(losses) ASC, SUM(points_for) DESC, SUM(points_against)) AS pos,
 	id,
 	team_name,
+	team_rating,
 	SUM(wins) AS wins,
 	SUM(losses) AS losses,
 	SUM(points_for) AS points_for,
@@ -21,26 +25,28 @@ FROM
 		SELECT
 		t.id,
 		t.team_name,
+		t.team_rating,
 		COUNT(rw.id) AS wins,
 		0 AS losses,
 		SUM(rw.winning_team_score) AS points_for,
 		SUM(rw.losing_team_score) AS points_against
 		FROM team t
 		LEFT JOIN match_result rw ON t.id = rw.winning_team_id
-		GROUP BY t.id, t.team_name
+		GROUP BY t.id, t.team_name, t.team_rating
 		UNION ALL
 		SELECT
 		t.id,
 		t.team_name,
+		t.team_rating,
 		0 AS wins,
 		COUNT(rl.id) AS losses,
 		SUM(rl.losing_team_score) AS points_for,
 		SUM(rl.winning_team_score) AS points_against
 		FROM team t
 		LEFT JOIN match_result rl ON t.id = rl.losing_team_id
-		GROUP BY t.id, t.team_name
+		GROUP BY t.id, t.team_name, t.team_rating
 	) s
-	GROUP BY id, team_name
+	GROUP BY id, team_name, team_rating
 ) s2;
 
 
@@ -49,6 +55,7 @@ SELECT
 pos,
 id,
 team_name,
+team_rating,
 wins,
 losses,
 points_for,

@@ -28,6 +28,7 @@ const loadTeamList = async () => {
         'pos, ' +
         'id, ' +
         'team_name, ' +
+        'team_rating, ' +
         'wins, ' +
         'losses, ' +
         'points_for, ' +

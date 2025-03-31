@@ -15,8 +15,14 @@
             <% } %>
 
             <form class="" action="/match_sim_result" method="post" name="matchSimForm" id="matchSimForm">
-                <p>Team 1: <%= nextMatchDetails[0].team1_name %> (<%= nextMatchDetails[0].team1_rating %>)</p>
-                <p>Team 2: <%= nextMatchDetails[0].team2_name %> (<%= nextMatchDetails[0].team2_rating %>)</p>
+                <% if (isNextMatchIncludeChosenTeam == true) { %>
+                <div class="chosenTeamHighlight">
+                <% } else { %>
+                <div>
+                <% } %>
+                    <p>Team 1: <%= nextMatchDetails[0].team1_name %> (<%= nextMatchDetails[0].team1_rating %>)</p>
+                    <p>Team 2: <%= nextMatchDetails[0].team2_name %> (<%= nextMatchDetails[0].team2_rating %>)</p>
+                </div>
                 <button type="submit" id="sim_match" name="sim_match" value="sim" class="btn btn-primary btn-block mainButton">
                     Simulate Match
                 </button>

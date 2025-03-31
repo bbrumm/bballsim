@@ -34,3 +34,7 @@ h1 {
     color: #384D48;
     padding: 5px;
 }
+
+.chosenTeamHighlight {
+    background-color: #ffedae;
+}
