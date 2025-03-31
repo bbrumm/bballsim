@@ -280,3 +280,35 @@ INNER JOIN team t ON p.team_id = t.id
 INNER JOIN player_match_stats s ON p.id = s.player_id 
 GROUP BY p.id, p.first_name, p.last_name, p.rating_ovr, t.team_name, t.id 
 ORDER BY SUM(s.points_scored) DESC;
+
+
+/*
+Generate a fixture of all teams
+*/
+
+SELECT
+t1.id AS team_1_id,
+t1.team_name AS team_1_name,
+t2.id AS team_2_id,
+t2.team_name AS team_2_name
+FROM team t1
+CROSS JOIN team t2
+WHERE t1.id != t2.id;
+
+/*
+Find the next match
+*/
+
+SELECT *
+FROM match_result mr;
+
+SELECT
+id AS match_result_id,
+team1_id,
+team2_id
+FROM match_result mr
+	WHERE id = (
+	SELECT MIN(id)
+	FROM match_result
+	WHERE winning_team_id IS NULL
+);

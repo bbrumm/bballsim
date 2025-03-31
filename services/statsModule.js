@@ -12,8 +12,8 @@ async function showStats(req, res) {
     gameParameters = await commonDataLookups.lookupChosenTeamID();
     chosenTeamID = gameParameters[0].team_id_chosen;
 
-    console.log('playerStats: ', playerStats);
-    console.log('chosenTeamID: ' + chosenTeamID);
+    //console.log('playerStats: ', playerStats);
+    //console.log('chosenTeamID: ' + chosenTeamID);
 
     res.render('stats', {
         playerStats: playerStats,

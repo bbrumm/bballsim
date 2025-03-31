@@ -8,6 +8,7 @@
             <div class="col-8">
                 <table class="dataTable">
                     <thead>
+                        <th>Pos.</th>
                         <th>Team</th>
                         <th>Rating</th>
                         <th>Wins</th>
@@ -17,7 +18,12 @@
                     </thead>
                     <tbody>
                         <% for(var i=0; i < teamList.length; i++) { %>
-                            <tr>
+                            <% if (chosenTeamID == teamList[i].id) { %>
+                                <tr class="rowIsForChosenTeam">
+                            <% } else { %>
+                                <tr>
+                            <% } %>
+                                <td><%= i + 1 %></td>
                                 <td><a href='/team/?teamID=<%= teamList[i].id %>'><%= teamList[i].team_name %></a></td>
                                 <td><%= teamList[i].team_rating %></td>
                                 <td><%= teamList[i].wins %></td>

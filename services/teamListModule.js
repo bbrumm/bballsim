@@ -1,17 +1,21 @@
 const db = require('./db.js');
-
 const client = db.client;
+const commonDataLookups = require('./commonDataLookups.js');
 
 module.exports.showStandings = showStandings;
 
 async function showStandings(req, res) {
     let teamListResults = await loadTeamList();
 
+    gameParameters = await commonDataLookups.lookupChosenTeamID();
+    chosenTeamID = gameParameters[0].team_id_chosen;
+
     //console.log('Team List: ', teamListResults); 
     let teamList = teamListResults;
 
     res.render('index', {
-        teamList: teamList
+        teamList: teamList,
+        chosenTeamID: chosenTeamID
     });
 }
 

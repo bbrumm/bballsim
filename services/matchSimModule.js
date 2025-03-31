@@ -9,10 +9,10 @@ async function showMatchSim(req, res) {
     console.log('Request Body for Show: ', req.body);
 
     //Show teams regardless of button being clicked
-    let twoTeamsResults = await loadTwoTeams();
+    let nextMatchDetails = await loadNextMatch();
 
     res.render('match_sim', {
-        twoTeams: twoTeamsResults,
+        nextMatchDetails: nextMatchDetails,
         resultOfInsert: false
     });
 }
@@ -23,6 +23,8 @@ async function showResultsOfMatchSim(req, res) {
     //Calculate player scores
     team1PlayerMatchStats = await calculatePlayerMatchStats(req.body.team1ID);
     team2PlayerMatchStats = await calculatePlayerMatchStats(req.body.team2ID);
+
+    matchResultID = req.body.matchResultID;
 
     console.log('Team 1 player stats: ', team1PlayerMatchStats);
     console.log('Team 2 player stats: ', team2PlayerMatchStats);
@@ -47,13 +49,13 @@ async function showResultsOfMatchSim(req, res) {
     console.log('Losing team: ' + losingTeamName + ', ID ' + losingTeamID);
 
     //Store the result of the match
-    resultOfInsert = await storeMatchSimResult(winningTeamID, losingTeamID, winningTeamScore, losingTeamScore, team1PlayerMatchStats, team2PlayerMatchStats);
+    resultOfInsert = await storeMatchSimResult(matchResultID, winningTeamID, losingTeamID, winningTeamScore, losingTeamScore, team1PlayerMatchStats, team2PlayerMatchStats);
     console.log('Match result inserted, response is ', resultOfInsert);
 
-    let twoTeamsResults = await loadTwoTeams();
+    let nextMatchDetails = await loadNextMatch();
 
     res.render('match_sim', {
-        twoTeams: twoTeamsResults,
+        nextMatchDetails: nextMatchDetails,
         resultOfInsert: resultOfInsert,
         winningTeamID: winningTeamID,
         losingTeamID: losingTeamID,
@@ -65,8 +67,25 @@ async function showResultsOfMatchSim(req, res) {
 
 }
 
-const loadTwoTeams = async () => {
-    queryString = 'SELECT id, team_name, team_rating FROM team ORDER BY RANDOM() LIMIT 2';
+const loadNextMatch = async () => {
+    //queryString = 'SELECT id, team_name, team_rating FROM team ORDER BY RANDOM() LIMIT 2';
+    queryString = 'SELECT ' +
+        'mr.id AS match_result_id, ' +
+        'mr.team1_id, ' +
+        't1.team_name AS team1_name, ' +
+        't1.team_rating AS team1_rating, ' +
+        'team2_id,' +
+        't2.team_name AS team2_name, ' +
+        't2.team_rating AS team2_rating ' +
+        'FROM match_result mr ' +
+        'INNER JOIN team t1 ON mr.team1_id = t1.id ' +
+        'INNER JOIN team t2 ON mr.team2_id = t2.id ' +
+        '    WHERE mr.id = ( ' +
+        '    SELECT MIN(id) ' +
+        '    FROM match_result ' +
+        '    WHERE winning_team_id IS NULL ' +
+        ');';
+    console.log('loadNextMatch queryString: ' + queryString)
     try {
         const res = await client.query(queryString);
         return res.rows;
@@ -192,38 +211,38 @@ async function getRandomInt(max) {
 }
 
 async function storeMatchSimResult(
-    winningTeamID, losingTeamID, winningTeamScore, losingTeamScore, team1PlayerMatchStats, team2PlayerMatchStats
+    matchResultID, winningTeamID, losingTeamID, winningTeamScore, losingTeamScore, team1PlayerMatchStats, team2PlayerMatchStats
 ) {
     //Store the match result
-    matchResultResponse = await insertMatchResult(winningTeamID, losingTeamID, winningTeamScore, losingTeamScore);
+    matchResultResponse = await updateMatchResult(matchResultID, winningTeamID, losingTeamID, winningTeamScore, losingTeamScore);
     console.log('matchResultResponse ', matchResultResponse);
     numberOfInsertedRows = matchResultResponse.rowCount;
     
-    insertedMatchResult = await findInsertedMatchResultID();
-    console.log('insertedMatchResult ', insertedMatchResult);
-    insertedMatchResultID = insertedMatchResult.rows[0].max_id;
+    //insertedMatchResult = await findInsertedMatchResultID();
+    //console.log('insertedMatchResult ', insertedMatchResult);
+    //insertedMatchResultID = insertedMatchResult.rows[0].max_id;
 
-    team1PlayerInserted = await insertPlayerStats(insertedMatchResultID, team1PlayerMatchStats);
-    team2PlayerInserted = await insertPlayerStats(insertedMatchResultID, team2PlayerMatchStats);
+    team1PlayerInserted = await insertPlayerStats(matchResultID, team1PlayerMatchStats);
+    team2PlayerInserted = await insertPlayerStats(matchResultID, team2PlayerMatchStats);
    
     return (numberOfInsertedRows == 1);
     
 }
 
-async function insertPlayerStats(insertedMatchResultID, teamPlayerMatchStats) {
+async function insertPlayerStats(matchResultID, teamPlayerMatchStats) {
     //Insert player stats
     //We do this one by one, as the pg library does not support bulk insert
     //I could use a different library, but it's probably not worth it for the small volumes of data here.
     for (i = 0; i < teamPlayerMatchStats.length; i++) {
         queryString = "INSERT INTO player_match_stats (match_result_id, player_id, points_scored) VALUES ($1, $2, $3);";
         console.log("Insert Match Stats query: " + queryString);
-        console.log("Match Result ID: " + insertedMatchResultID);
+        console.log("Match Result ID: " + matchResultID);
         console.log("Player ID: " + teamPlayerMatchStats[i].id);
         console.log("Player Points: " + teamPlayerMatchStats[i].points);
         try {
             result = await client.query(
                 queryString, 
-                [insertedMatchResultID, teamPlayerMatchStats[i].id, teamPlayerMatchStats[i].points]
+                [matchResultID, teamPlayerMatchStats[i].id, teamPlayerMatchStats[i].points]
             );
         } catch (error) {
             console.error(error.stack);
@@ -231,12 +250,20 @@ async function insertPlayerStats(insertedMatchResultID, teamPlayerMatchStats) {
     }
 }
 
-async function insertMatchResult(winningTeamID, losingTeamID, winningTeamScore, losingTeamScore) {
-    console.log("* Insert the match result: winning team ID ("+ winningTeamID +"), losing team ID ("+ losingTeamID +")");
-    queryString = "INSERT INTO match_result (winning_team_id, losing_team_id, winning_team_score, losing_team_score) VALUES ($1, $2, $3, $4)";
+async function updateMatchResult(matchResultID, winningTeamID, losingTeamID, winningTeamScore, losingTeamScore) {
+    console.log("* Update the match result: winning team ID ("+ winningTeamID +"), losing team ID ("+ losingTeamID +")");
+    queryString = "UPDATE match_result " +
+        "SET winning_team_id = $1, " +
+        "losing_team_id = $2, " +
+        "winning_team_score = $3, " +
+        "losing_team_score = $4 " +
+        "WHERE id = $5;";
     console.log("Query string: " + queryString);
     try {
-        result = await client.query(queryString, [winningTeamID, losingTeamID, winningTeamScore, losingTeamScore]);
+        result = await client.query(
+            queryString, 
+            [winningTeamID, losingTeamID, winningTeamScore, losingTeamScore, matchResultID]
+        );
         //return await isInsertSuccessful(result);
         return result;
     } catch (error) {

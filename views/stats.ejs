@@ -9,6 +9,7 @@
             <div class="col-8">
                 <table class="dataTable">
                     <thead>
+                        <th>Pos.</th>
                         <th>Player Name</th>
                         <th>Rating</th>
                         <th>Team</th>
@@ -23,6 +24,7 @@
                             <% } else { %>
                                 <tr>
                             <% } %>
+                                <td><%= i + 1 %></td>
                                 <td><%= playerStats[i].first_name %> <%= playerStats[i].last_name %></td>
                                 <td><%= playerStats[i].rating_ovr %></td>
                                 <td><a href='/team/?teamID=<%= playerStats[i].team_id %>'><%= playerStats[i].team_name %></a></td>
