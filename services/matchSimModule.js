@@ -40,9 +40,13 @@ async function showResultsOfMatchSim(req, res) {
     losingTeamID = await calculateMatchLoser(req, winningTeamID);
     winningTeamScore = await setWinningTeamScore(team1Score, team2Score);
     losingTeamScore = await setLosingTeamScore(team1Score, team2Score);
+    winningTeam = await lookupTeamDetails(winningTeamID);
+    losingTeam = await lookupTeamDetails(losingTeamID);
+    winningTeamName = winningTeam[0].team_name;
+    losingTeamName = losingTeam[0].team_name;
 
-    console.log('Winning team ID: ' + winningTeamID);
-    console.log('Losing team ID: ' + losingTeamID);
+    console.log('Winning team: ' + winningTeamName + ', ID ' + winningTeamID);
+    console.log('Losing team: ' + losingTeamName + ', ID ' + losingTeamID);
 
     //Store the result of the match
     resultOfInsert = await storeMatchSimResult(winningTeamID, losingTeamID, winningTeamScore, losingTeamScore);
@@ -56,7 +60,9 @@ async function showResultsOfMatchSim(req, res) {
         winningTeamID: winningTeamID,
         losingTeamID: losingTeamID,
         winningTeamScore: winningTeamScore,
-        losingTeamScore: losingTeamScore
+        losingTeamScore: losingTeamScore,
+        winningTeamName: winningTeamName,
+        losingTeamName: losingTeamName
     });
 
 }
@@ -65,6 +71,17 @@ const loadTwoTeams = async () => {
     queryString = 'SELECT id, team_name FROM team ORDER BY RANDOM() LIMIT 2';
     try {
         const res = await client.query(queryString);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function lookupTeamDetails(teamID) {
+    queryString = 'SELECT team_name FROM team WHERE id = $1';
+    try {
+        const res = await client.query(queryString, [teamID]);
+        //console.log('Team name: ' + res.rows[0].team_name);
         return res.rows;
     } catch (error) {
         console.log(error)
