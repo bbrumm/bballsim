@@ -8,15 +8,6 @@ module.exports.showResultsOfMatchSim = showResultsOfMatchSim;
 async function showMatchSim(req, res) {
     console.log('Request Body for Show: ', req.body);
 
-    //buttonWasClicked = determineButtonThatWasClicked(req.body);
-
-    //if (buttonWasClicked) {
-        //Match Sim button was clicked before reload, so store the result
-        
-        //storeMatchSimResult
-
-    //}
-
     //Show teams regardless of button being clicked
     let twoTeamsResults = await loadTwoTeams();
 
@@ -29,13 +20,13 @@ async function showMatchSim(req, res) {
 async function showResultsOfMatchSim(req, res) {
     console.log('Request Body after Submit: ', req.body);
 
-    team1Score = await calculateTeamScore();
-    team2Score = await calculateTeamScore();
+    team1Score = await calculateTeamScore(req.body.team1Rating);
+    team2Score = await calculateTeamScore(req.body.team2Rating);
 
     console.log('Match scores: ' + team1Score + ' vs ' + team2Score);
 
     //Calculate winner of match
-    //winningTeamID = await calculateMatchWinner(req.body.team1ID, req.body.team2ID);
+    //TODO: this could be refactored and improved
     winningTeamID = await calculateMatchWinner(req, team1Score, team2Score);
     losingTeamID = await calculateMatchLoser(req, winningTeamID);
     winningTeamScore = await setWinningTeamScore(team1Score, team2Score);
@@ -88,10 +79,13 @@ async function lookupTeamDetails(teamID) {
     }
 }
 
-async function calculateTeamScore() {
+async function calculateTeamScore(teamRating) {
     min = 70;
     max = 140;
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    baseScore = Math.floor(Math.random() * (max - min + 1)) + min;
+    finalScore = Math.round(baseScore * teamRating / 100, 0);
+    console.log('Final score: ' + finalScore);
+    return finalScore;
 }
 
 async function calculateMatchWinner(req, team1Score, team2Score) {
