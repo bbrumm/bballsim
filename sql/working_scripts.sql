@@ -77,6 +77,7 @@ GROUP BY t.id, t.team_name;
 
 
 SELECT
+ROW_NUMBER() OVER(ORDER BY SUM(wins) DESC, SUM(losses) ASC, SUM(points_for) DESC, SUM(points_against)) AS pos,
 id,
 team_name,
 SUM(wins) AS wins,
@@ -312,3 +313,4 @@ FROM match_result mr
 	FROM match_result
 	WHERE winning_team_id IS NULL
 );
+

@@ -5,6 +5,8 @@ module.exports.lookupTeamDetails = lookupTeamDetails;
 module.exports.lookupMatchResultsForTeam = lookupMatchResultsForTeam;
 module.exports.lookupPlayerDetailsForTeam = lookupPlayerDetailsForTeam;
 module.exports.lookupChosenTeamID = lookupChosenTeamID;
+module.exports.lookupOverallRecordForTeam = lookupOverallRecordForTeam;
+
 
 
 async function lookupTeamDetails(teamID) {
@@ -79,6 +81,27 @@ async function lookupChosenTeamID() {
     queryString = 'SELECT team_id_chosen FROM game_parameters;';
     try {
         const res = await client.query(queryString);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function lookupOverallRecordForTeam(teamID) {
+    queryString = queryString = 'SELECT ' +
+    'pos, ' +
+    'id, ' +
+    'team_name, ' +
+    'wins, ' +
+    'losses, ' +
+    'points_for, ' +
+    'points_against ' +
+    'FROM standings ' +
+    'WHERE id = $1 ' +
+    'ORDER BY wins DESC, losses ASC, points_for DESC, points_against ASC;';
+    try {
+        const res = await client.query(queryString, [teamID]);
+        console.log('Overall position result: ', res.rows);
         return res.rows;
     } catch (error) {
         console.log(error)

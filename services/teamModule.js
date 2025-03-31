@@ -8,11 +8,13 @@ async function showTeamPage(req, res) {
     teamDetails = await commonDataLookups.lookupTeamDetails(req.query.teamID);
     teamMatchResults = await commonDataLookups.lookupMatchResultsForTeam(req.query.teamID);
     playerDetails = await commonDataLookups.lookupPlayerDetailsForTeam(req.query.teamID);
+    teamOverallPosition =await commonDataLookups.lookupOverallRecordForTeam(req.query.teamID);
 
     res.render('team', {
         teamDetails: teamDetails,
         teamID: req.query.teamID,
-        teamMatchResults: teamMatchResults
+        teamMatchResults: teamMatchResults,
+        teamOverallPosition: teamOverallPosition
     });
 }
 
