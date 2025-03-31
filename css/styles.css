@@ -25,8 +25,12 @@ h1 {
     padding: 10px;
 }
 
+.rowIsForChosenTeam {
+    background-color: #ffedae;
+}
+
 .linkBar {
     background-color: #f4f4f4;
     color: #384D48;
     padding: 5px;
-  }
+}

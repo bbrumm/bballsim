@@ -18,7 +18,11 @@
                     </thead>
                     <tbody>
                         <% for(var i=0; i < playerStats.length; i++) { %>
-                            <tr>
+                            <% if (chosenTeamID == playerStats[i].team_id) { %>
+                                <tr class="rowIsForChosenTeam">
+                            <% } else { %>
+                                <tr>
+                            <% } %>
                                 <td><%= playerStats[i].first_name %> <%= playerStats[i].last_name %></td>
                                 <td><%= playerStats[i].rating_ovr %></td>
                                 <td><a href='/team/?teamID=<%= playerStats[i].team_id %>'><%= playerStats[i].team_name %></a></td>

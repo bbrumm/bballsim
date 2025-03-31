@@ -9,6 +9,7 @@ const teamListModule = require(__dirname + "/services/teamListModule");
 const matchSimModule = require(__dirname + "/services/matchSimModule");
 const teamModule = require(__dirname + "/services/teamModule");
 const statsModule = require(__dirname + "/services/statsModule");
+const homeModule = require(__dirname + "/services/homeModule");
 
 app.set('view engine', 'ejs');
 
@@ -26,6 +27,10 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.get('/', (req, res) => {
     //res.send('Hello World!');
     teamListModule.showStandings(req, res);
+});
+
+app.get('/home/', (req, res) => {
+  homeModule.showHome(req, res);
 });
 
 app.get('/match_sim', (req, res) => {
