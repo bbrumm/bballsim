@@ -8,6 +8,8 @@
                 <th>Team</th>
                 <th>Wins</th>
                 <th>Losses</th>
+                <th>Points For</th>
+                <th>Points Against</th>
             </thead>
             <tbody>
                 <% for(var i=0; i < teamList.length; i++) { %>
@@ -15,6 +17,8 @@
                         <td><%= teamList[i].team_name %></td>
                         <td><%= teamList[i].wins %></td>
                         <td><%= teamList[i].losses %></td>
+                        <td><%= teamList[i].points_for %></td>
+                        <td><%= teamList[i].points_against %></td>
                     </tr>
                 <% } %>
             </tbody>

@@ -36,12 +36,14 @@ async function showResultsOfMatchSim(req, res) {
     //winningTeamID = await calculateMatchWinner(req.body.team1ID, req.body.team2ID);
     winningTeamID = await calculateMatchWinner(req, team1Score, team2Score);
     losingTeamID = await calculateMatchLoser(req, winningTeamID);
+    winningTeamScore = await setWinningTeamScore(team1Score, team2Score);
+    losingTeamScore = await setLosingTeamScore(team1Score, team2Score);
 
     console.log('Winning team ID: ' + winningTeamID);
     console.log('Losing team ID: ' + losingTeamID);
 
     //Store the result of the match
-    resultOfInsert = await storeMatchSimResult(winningTeamID, losingTeamID);
+    resultOfInsert = await storeMatchSimResult(winningTeamID, losingTeamID, winningTeamScore, losingTeamScore);
     console.log('Match result inserted, response is ', resultOfInsert);
 
     let twoTeamsResults = await loadTwoTeams();
@@ -85,16 +87,32 @@ async function calculateMatchLoser(req, winningTeamID) {
     }
 }
 
+async function setWinningTeamScore(team1Score, team2Score) {
+    if (team1Score >= team2Score) {
+        return team1Score;
+    } else {
+        return team2Score;
+    }
+}
+
+async function setLosingTeamScore(team1Score, team2Score) {
+    if (team1Score >= team2Score) {
+        return team2Score;
+    } else {
+        return team1Score;
+    }
+}
+
 async function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
 
-async function storeMatchSimResult(winningTeamID, losingTeamID) {
+async function storeMatchSimResult(winningTeamID, losingTeamID, winningTeamScore, losingTeamScore) {
     console.log("* Insert the match result: winning team ID ("+ winningTeamID +"), losing team ID ("+ losingTeamID +")");
-    queryString = "INSERT INTO match_result (winning_team_id, losing_team_id) VALUES ($1, $2)";
+    queryString = "INSERT INTO match_result (winning_team_id, losing_team_id, winning_team_score, losing_team_score) VALUES ($1, $2, $3, $4)";
     console.log("Query string: " + queryString);
     try {
-        result = await client.query(queryString, [winningTeamID, losingTeamID]);
+        result = await client.query(queryString, [winningTeamID, losingTeamID, winningTeamScore, losingTeamScore]);
         return await isInsertSuccessful(result);
     } catch (error) {
         console.error(error.stack);

@@ -18,11 +18,38 @@ async function showStandings(req, res) {
 
 const loadTeamList = async () => {
     //queryString = 'SELECT id, team_name FROM team';
-    queryString = 'SELECT t.id, t.team_name, ' +
-        '(SELECT COUNT(*) FROM match_result WHERE winning_team_id = t.id) AS wins, ' +
-        '(SELECT COUNT(*) FROM match_result WHERE losing_team_id = t.id) AS losses ' +
-        'FROM team t ' +
-        'ORDER BY wins DESC, losses DESC;';
+    queryString = 'SELECT ' +
+        'id, ' +
+        'team_name, ' +
+        'SUM(wins) AS wins, ' +
+        'SUM(losses) AS losses, ' +
+        'SUM(points_for) AS points_for, ' +
+        'SUM(points_against) AS points_against ' +
+        'FROM ( ' +
+            'SELECT ' +
+            't.id, ' +
+            't.team_name, ' +
+            'COUNT(rw.id) AS wins, ' +
+            '0 AS losses, ' +
+            'SUM(rw.winning_team_score) AS points_for, ' +
+            'SUM(rw.losing_team_score) AS points_against ' +
+            'FROM team t ' +
+            'LEFT JOIN match_result rw ON t.id = rw.winning_team_id ' +
+            'GROUP BY t.id, t.team_name ' +
+            'UNION ALL ' +
+            'SELECT ' +
+            't.id, ' +
+            't.team_name, ' +
+            '0 AS wins, ' +
+            'COUNT(rl.id) AS losses, ' +
+            'SUM(rl.losing_team_score) AS points_for, ' +
+            'SUM(rl.winning_team_score) AS points_against ' +
+            'FROM team t ' +
+            'LEFT JOIN match_result rl ON t.id = rl.losing_team_id ' +
+            'GROUP BY t.id, t.team_name ' +
+        ') s ' +
+        'GROUP BY id, team_name ' +
+        'ORDER BY SUM(wins) DESC, SUM(losses) ASC, SUM(points_for) DESC, SUM(points_against) ASC;';
     try {
         const res = await client.query(queryString);
         return res.rows;
