@@ -24,8 +24,11 @@ async function showResultsOfMatchSim(req, res) {
     team1PlayerMatchStats = await calculatePlayerMatchStats(req.body.team1ID);
     team2PlayerMatchStats = await calculatePlayerMatchStats(req.body.team2ID);
 
-    team1Score = await calculateTeamScore(req.body.team1Rating);
-    team2Score = await calculateTeamScore(req.body.team2Rating);
+    console.log('Team 1 player stats: ', team1PlayerMatchStats);
+    console.log('Team 2 player stats: ', team2PlayerMatchStats);
+
+    team1Score = await calculateTeamScore(team1PlayerMatchStats);
+    team2Score = await calculateTeamScore(team2PlayerMatchStats);
 
     console.log('Match scores: ' + team1Score + ' vs ' + team2Score);
 
@@ -95,7 +98,7 @@ async function calculatePlayerMatchStats(teamID) {
     teamPlayers = await lookupPlayerDetailsForTeam(teamID);
 
     //Loop through players and calculate a score for them
-    for (var i=0; i < teamPlayers.length; i++) {
+    for (i = 0; i < teamPlayers.length; i++) {
         teamPlayers[i].points = await calculatePlayerPoints(teamPlayers[i].rating_ovr);
     }
 
@@ -103,13 +106,24 @@ async function calculatePlayerMatchStats(teamID) {
 
 }
 
-async function calculateTeamScore(teamRating) {
+async function calculateTeamScore(teamPlayerMatchStats) {
+    /*
     min = 70;
     max = 140;
     baseScore = Math.floor(Math.random() * (max - min + 1)) + min;
     finalScore = Math.round(baseScore * teamRating / 100, 0);
     console.log('Final score: ' + finalScore);
     return finalScore;
+    */
+    finalScore = 0;
+    
+    for (i = 0; i < teamPlayerMatchStats.length; i++) {
+        finalScore = finalScore + teamPlayerMatchStats[i].points;
+    }
+
+    return finalScore;
+
+
 }
 
 async function calculatePlayerPoints(playerRating) {
