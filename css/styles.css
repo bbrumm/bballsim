@@ -11,7 +11,7 @@ h1 {
 
 .standingsTable {
     width:100%;
-  }
+}
   
 .standingsTable td {
     border: 1px grey solid;
@@ -19,6 +19,22 @@ h1 {
 }
 
 .standingsTable th {
+    border: 1px grey solid;
+    background-color: #EEEEEE;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.teamResultsTable {
+    width:100%;
+}
+  
+.teamResultsTable td {
+    border: 1px grey solid;
+    padding: 10px;
+}
+
+.teamResultsTable th {
     border: 1px grey solid;
     background-color: #EEEEEE;
     font-weight: bold;

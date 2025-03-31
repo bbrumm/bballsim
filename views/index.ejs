@@ -18,7 +18,7 @@
                     <tbody>
                         <% for(var i=0; i < teamList.length; i++) { %>
                             <tr>
-                                <td><%= teamList[i].team_name %></td>
+                                <td><a href='/team/?teamID=<%= teamList[i].id %>'><%= teamList[i].team_name %></a></td>
                                 <td><%= teamList[i].team_rating %></td>
                                 <td><%= teamList[i].wins %></td>
                                 <td><%= teamList[i].losses %></td>
