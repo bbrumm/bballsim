@@ -9,8 +9,8 @@ async function showTeamPage(req, res) {
     console.log('Request Query: ', req.query);
 
     teamDetails = await lookupTeamDetails(req.query.teamID);
-
     teamMatchResults = await lookupMatchResultsForTeam(req.query.teamID);
+    playerDetails = await lookupPlayerDetailsForTeam(req.query.teamID)
 
     res.render('team', {
         teamDetails: teamDetails,
@@ -57,6 +57,24 @@ async function lookupMatchResultsForTeam(teamID) {
         'LEFT JOIN team o ON r.winning_team_id = o.id ' +
         'WHERE t.id = $1 ' +
         'ORDER BY id ASC;';
+    try {
+        const res = await client.query(queryString, [teamID]);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function lookupPlayerDetailsForTeam(teamID) {
+    queryString = 'SELECT ' +
+        'p.id, ' +
+        'p.first_name, ' +
+        'p.last_name, ' +
+        'p.rating_ovr ' +
+        'FROM player p ' +
+        'INNER JOIN team t ON p.team_id = t.id ' +
+        'WHERE t.id = $1 ' +
+        'ORDER BY p.rating_ovr DESC;';
     try {
         const res = await client.query(queryString, [teamID]);
         return res.rows;

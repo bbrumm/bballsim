@@ -14,7 +14,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-8">
-                <table class="teamResultsTable">
+                <table class="dataTable">
                     <thead>
                         <th>ID</th>
                         <th>Result</th>
@@ -30,6 +30,31 @@
                                 <td><%= teamMatchResults[i].points_for %></td>
                                 <td><%= teamMatchResults[i].opponent %></td>
                                 <td><%= teamMatchResults[i].points_against %></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <h2>Players</h2>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <table class="dataTable">
+                    <thead>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Rating (OVR)</th>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i < playerDetails.length; i++) { %>
+                            <tr>
+                                <td><%= playerDetails[i].id %></a></td>
+                                <td><%= playerDetails[i].first_name %> <%= playerDetails[i].last_name %></td>
+                                <td><%= playerDetails[i].rating_ovr %></td>
                             </tr>
                         <% } %>
                     </tbody>

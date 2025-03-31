@@ -124,7 +124,8 @@ r.winning_team_id AS team_id,
 r.losing_team_id AS opponent_team_id,
 o.team_name AS opponent,
 r.winning_team_score AS points_for,
-r.losing_team_score AS points_against
+r.losing_team_score AS points_against,
+'Won' AS match_result
 FROM team t
 LEFT JOIN match_result r ON t.id = r.winning_team_id
 LEFT JOIN team o ON r.losing_team_id = o.id
@@ -136,9 +137,26 @@ r.losing_team_id AS team_id,
 r.winning_team_id AS opponent_team_id,
 o.team_name AS opponent,
 r.losing_team_score AS points_for,
-r.winning_team_score AS points_against
+r.winning_team_score AS points_against,
+'Lost'
 FROM team t
 LEFT JOIN match_result r ON t.id = r.losing_team_id
 LEFT JOIN team o ON r.winning_team_id = o.id
 WHERE t.id = 28
 ORDER BY id ASC;
+
+/*
+Find the players for a team
+*/
+
+
+
+SELECT
+p.id,
+p.first_name,
+p.last_name,
+p.rating_ovr
+FROM player p
+INNER JOIN team t ON p.team_id = t.id
+WHERE t.id = 28
+ORDER BY p.rating_ovr DESC;

@@ -9,32 +9,16 @@ h1 {
     color: #212a28;
 }
 
-.standingsTable {
+.dataTable {
     width:100%;
 }
   
-.standingsTable td {
+.dataTable td {
     border: 1px grey solid;
     padding: 10px;
 }
 
-.standingsTable th {
-    border: 1px grey solid;
-    background-color: #EEEEEE;
-    font-weight: bold;
-    padding: 10px;
-}
-
-.teamResultsTable {
-    width:100%;
-}
-  
-.teamResultsTable td {
-    border: 1px grey solid;
-    padding: 10px;
-}
-
-.teamResultsTable th {
+.dataTable th {
     border: 1px grey solid;
     background-color: #EEEEEE;
     font-weight: bold;
