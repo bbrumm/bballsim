@@ -20,6 +20,10 @@ async function showMatchSim(req, res) {
 async function showResultsOfMatchSim(req, res) {
     console.log('Request Body after Submit: ', req.body);
 
+    //Calculate player scores
+    team1PlayerMatchStats = await calculatePlayerMatchStats(req.body.team1ID);
+    team2PlayerMatchStats = await calculatePlayerMatchStats(req.body.team2ID);
+
     team1Score = await calculateTeamScore(req.body.team1Rating);
     team2Score = await calculateTeamScore(req.body.team2Rating);
 
@@ -79,6 +83,26 @@ async function lookupTeamDetails(teamID) {
     }
 }
 
+async function calculatePlayerMatchStats(teamID) {
+    /*
+    This function will find the players involved in the recently-simulated match,
+    calculate the number of points for each player, 
+    insert them into the database, and return these results.
+    They are used to calculate the team's score later.
+    */
+
+    //Get players for each team
+    teamPlayers = await lookupPlayerDetailsForTeam(teamID);
+
+    //Loop through players and calculate a score for them
+    for (var i=0; i < teamPlayers.length; i++) {
+        teamPlayers[i].points = await calculatePlayerPoints(teamPlayers[i].rating_ovr);
+    }
+
+    return teamPlayers;
+
+}
+
 async function calculateTeamScore(teamRating) {
     min = 70;
     max = 140;
@@ -86,6 +110,32 @@ async function calculateTeamScore(teamRating) {
     finalScore = Math.round(baseScore * teamRating / 100, 0);
     console.log('Final score: ' + finalScore);
     return finalScore;
+}
+
+async function calculatePlayerPoints(playerRating) {
+    min = 0;
+    max = 30;
+    baseScore = Math.floor(Math.random() * (max - min + 1)) + min;
+    finalScore = Math.round(baseScore * playerRating / 100, 0);
+    return finalScore;
+}
+
+async function lookupPlayerDetailsForTeam(teamID) {
+    queryString = 'SELECT ' +
+        'p.id, ' +
+        'p.first_name, ' +
+        'p.last_name, ' +
+        'p.rating_ovr ' +
+        'FROM player p ' +
+        'INNER JOIN team t ON p.team_id = t.id ' +
+        'WHERE t.id = $1 ' +
+        'ORDER BY p.rating_ovr DESC;';
+    try {
+        const res = await client.query(queryString, [teamID]);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 async function calculateMatchWinner(req, team1Score, team2Score) {
