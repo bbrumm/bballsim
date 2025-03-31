@@ -2,9 +2,9 @@ const db = require('./db.js');
 
 const client = db.client;
 
-module.exports.showExample = showExample;
+module.exports.showStandings = showStandings;
 
-async function showExample(req, res) {
+async function showStandings(req, res) {
     let teamListResults = await loadTeamList();
 
     console.log('Team List: ', teamListResults); 
