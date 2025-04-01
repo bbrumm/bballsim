@@ -303,14 +303,40 @@ Find the next match
 SELECT *
 FROM match_result mr;
 
+
+
 SELECT
 id AS match_result_id,
 team1_id,
 team2_id
 FROM match_result mr
-	WHERE id = (
+WHERE id = (
 	SELECT MIN(id)
 	FROM match_result
 	WHERE winning_team_id IS NULL
 );
+
+/*
+ * Find the next match for a specific team
+ */
+
+
+SELECT
+mr.id AS match_result_id,
+mr.team1_id,
+t1.team_name,
+mr.team2_id,
+t2.team_name
+FROM match_result mr
+INNER JOIN team t1 ON mr.team1_id = t1.id
+INNER JOIN team t2 ON mr.team2_id = t2.id
+WHERE mr.id = (
+	SELECT MIN(id)
+	FROM match_result
+	WHERE winning_team_id IS NULL
+	AND (team1_id = 24 OR team2_id = 24)
+);
+
+
+
 

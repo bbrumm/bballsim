@@ -1,0 +1,40 @@
+<%- include('header') -%>
+
+<%- include('links') -%>
+<body class="bodyStyle">
+    <h1><%= playerDetails[0].first_name %> <%= playerDetails[0].last_name %></h1>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <p>Team: <%= playerDetails[0].team_name %></p>
+                <p>Overall Rating: <%= playerDetails[0].rating_ovr %></p>
+            </div>
+        </div>
+    </div>
+    <h2>Player Stats</h2>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <table class="dataTable">
+                    <thead>
+                        <th>Season</th>
+                        <th>Games Played</th>
+                        <th>Total Points</th>
+                        <th>PPG</th>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i < playerDetails.length; i++) { %>
+                        <tr>
+                            <td>Current</td>
+                            <td><%= playerDetails[i].games_played %></td>
+                            <td><%= playerDetails[i].points_scored %></td>
+                            <td><%= playerDetails[i].ppg %></td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

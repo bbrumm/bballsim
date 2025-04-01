@@ -25,7 +25,7 @@
                                 <tr>
                             <% } %>
                                 <td><%= i + 1 %></td>
-                                <td><%= playerStats[i].first_name %> <%= playerStats[i].last_name %></td>
+                                <td><a href='/player/?playerID=<%= playerStats[i].id %>' class="link-primary"><%= playerStats[i].first_name %> <%= playerStats[i].last_name %></a></td>
                                 <td><%= playerStats[i].rating_ovr %></td>
                                 <td><a href='/team/?teamID=<%= playerStats[i].team_id %>'><%= playerStats[i].team_name %></a></td>
                                 <td><%= playerStats[i].games_played %></td>

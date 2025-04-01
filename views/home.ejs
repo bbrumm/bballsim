@@ -61,8 +61,8 @@
                     <tbody>
                         <% for(var i=0; i < playerDetails.length; i++) { %>
                             <tr>
-                                <td><%= playerDetails[i].id %></a></td>
-                                <td><%= playerDetails[i].first_name %> <%= playerDetails[i].last_name %></td>
+                                <td><%= playerDetails[i].id %></td>
+                                <td><a href='/player/?playerID=<%= playerDetails[i].id %>'><%= playerDetails[i].first_name %> <%= playerDetails[i].last_name %></a></td>
                                 <td><%= playerDetails[i].rating_ovr %></td>
                                 <td><%= playerDetails[i].points_scored %></td>
                             </tr>

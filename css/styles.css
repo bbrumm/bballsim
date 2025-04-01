@@ -2,12 +2,22 @@ h1 {
     text-align:center;
 }
 
+h2 {
+    text-align: center;
+}
+
 
 .bodyStyle {
     font-family: Montserrat, sans-serif;
-    background-color: #d5d5d5;
+    background-color: #efefef;
     color: #212a28;
 }
+
+/*
+a {
+    color: #0868d0;
+}
+*/
 
 .dataTable {
     width:100%;
@@ -20,7 +30,7 @@ h1 {
 
 .dataTable th {
     border: 1px grey solid;
-    background-color: #EEEEEE;
+    background-color: #bfbfbf;
     font-weight: bold;
     padding: 10px;
 }
