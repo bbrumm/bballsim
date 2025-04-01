@@ -339,4 +339,8 @@ WHERE mr.id = (
 
 
 
-
+SELECT
+p.id, p.first_name, p.last_name, p.rating_ovr, t.team_name
+FROM player p
+INNER JOIN team t ON p.team_id = t.id
+ORDER BY rating_ovr ASC;
