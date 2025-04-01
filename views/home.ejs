@@ -36,7 +36,7 @@
                                 <td><%= teamMatchResults[i].id %></a></td>
                                 <td><%= teamMatchResults[i].match_result %></td>
                                 <td><%= teamMatchResults[i].points_for %></td>
-                                <td><%= teamMatchResults[i].opponent %></td>
+                                <td><a href='/team/?teamID=<%= teamMatchResults[i].opponent_team_id %>'><%= teamMatchResults[i].opponent %></a></td>
                                 <td><%= teamMatchResults[i].points_against %></td>
                             </tr>
                         <% } %>
