@@ -6,23 +6,34 @@
     <h1>Match Sim</h1>
 
     <div class="row justify-content-center">
-        <div class="col-8">
+        <div class="col-8">  
 
             <% if (resultOfInsert == true) { %>
                 <p>Match result saved.</p>
                 <p><%= winningTeamName %> defeated <%= losingTeamName %>: <%= winningTeamScore %>-<%= losingTeamScore %></p>
                 <br />
             <% } %>
+        </div>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-4 text-center">
+            <div>
+                <p class="matchSimTeamName"><%= nextMatchDetails[0].team1_name %></p>
+                <p>Rating: <%= nextMatchDetails[0].team1_rating %></p>
+            </div>
+        </div>
+        <div class="col-4 text-center">
+            <div>
+                <p class="matchSimTeamName"><%= nextMatchDetails[0].team2_name %></p>
+                <p>Rating: <%= nextMatchDetails[0].team2_rating %></p>
+            </div>
+        </div>
 
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-4 text-center">
             <form class="" action="/match_sim_result" method="post" name="matchSimForm" id="matchSimForm">
-                <% if (isNextMatchIncludeChosenTeam == true) { %>
-                <div class="chosenTeamHighlight">
-                <% } else { %>
-                <div>
-                <% } %>
-                    <p>Team 1: <%= nextMatchDetails[0].team1_name %> (<%= nextMatchDetails[0].team1_rating %>)</p>
-                    <p>Team 2: <%= nextMatchDetails[0].team2_name %> (<%= nextMatchDetails[0].team2_rating %>)</p>
-                </div>
                 <button type="submit" id="sim_match" name="sim_match" value="sim" class="btn btn-primary btn-block mainButton">
                     Simulate Match
                 </button>
@@ -31,9 +42,11 @@
                 <input type="hidden" name="team2ID" value="<%= nextMatchDetails[0].team2_id %>" />
                 <input type="hidden" name="team1Rating" value="<%= nextMatchDetails[0].team1_rating %>" />
                 <input type="hidden" name="team2Rating" value="<%= nextMatchDetails[0].team2_rating %>" />
+            
             </form>
-
         </div>
+
+        
     </div>
 </body>
 </html>

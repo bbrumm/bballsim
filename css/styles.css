@@ -48,3 +48,7 @@ a {
 .chosenTeamHighlight {
     background-color: #ffedae;
 }
+
+.matchSimTeamName {
+    font-size: 24px;
+}
