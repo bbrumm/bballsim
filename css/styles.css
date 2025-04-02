@@ -53,3 +53,9 @@ a {
 .matchSimTeamName {
     font-size: 24px;
 }
+
+.tempDivHighlight {
+    /*background-color: #384D48;*/
+    border: 1px solid black;
+    
+}

@@ -3,6 +3,132 @@
 <%- include('links') -%>
 <body class="bodyStyle">
     <h1>Playoffs</h1>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-1 tempDivHighlight">
+                <p><a href='/team/?teamID=<%= standingsWest[0].id %>'><%= standingsWest[0].playoff_team_label %></a></p>
+                <p><a href='/team/?teamID=<%= standingsWest[7].id %>'><%= standingsWest[7].playoff_team_label %></a></p>
+            </div>
+            <div class="col-10 tempDivHighlight">
+                Gap
+            </div>
+            <div class="col-1 tempDivHighlight">
+                <p><a href='/team/?teamID=<%= standingsEast[0].id %>'><%= standingsEast[0].playoff_team_label %></a></p>
+                <p><a href='/team/?teamID=<%= standingsEast[7].id %>'><%= standingsEast[7].playoff_team_label %></a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-1 tempDivHighlight">
+                Gap
+            </div>
+            <div class="col-1 tempDivHighlight">
+                Match W5
+            </div>
+            <div class="col-8 tempDivHighlight">
+                Gap
+            </div>
+            <div class="col-1 tempDivHighlight">
+                Match E5
+            </div>
+            <div class="col-1 tempDivHighlight">
+                Gap
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-1 tempDivHighlight">
+                <p><a href='/team/?teamID=<%= standingsWest[3].id %>'><%= standingsWest[3].playoff_team_label %></a></p>
+                <p><a href='/team/?teamID=<%= standingsWest[4].id %>'><%= standingsWest[4].playoff_team_label %></a></p>
+            </div>
+            <div class="col-10 tempDivHighlight">
+                Gap
+            </div>
+            <div class="col-1 tempDivHighlight">
+                <p><a href='/team/?teamID=<%= standingsEast[3].id %>'><%= standingsEast[3].playoff_team_label %></a></p>
+                <p><a href='/team/?teamID=<%= standingsEast[4].id %>'><%= standingsEast[4].playoff_team_label %></a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 tempDivHighlight">
+                Gap
+            </div>
+            <div class="col-1 tempDivHighlight">
+                Match W7
+            </div>
+            <div class="col-6 tempDivHighlight">
+                Gap
+            </div>
+            <div class="col-1 tempDivHighlight">
+                Match E7
+            </div>
+            <div class="col-2 tempDivHighlight">
+                Gap
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-1 tempDivHighlight">
+                <p><a href='/team/?teamID=<%= standingsWest[2].id %>'><%= standingsWest[2].playoff_team_label %></a></p>
+                <p><a href='/team/?teamID=<%= standingsWest[5].id %>'><%= standingsWest[5].playoff_team_label %></a></p>
+            </div>
+            <div class="col-10 tempDivHighlight">
+                Gap
+            </div>
+            <div class="col-1 tempDivHighlight">
+                <p><a href='/team/?teamID=<%= standingsEast[2].id %>'><%= standingsEast[2].playoff_team_label %></a></p>
+                <p><a href='/team/?teamID=<%= standingsEast[5].id %>'><%= standingsEast[5].playoff_team_label %></a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-1 tempDivHighlight">
+                Gap
+            </div>
+            <div class="col-1 tempDivHighlight">
+                Match W6
+            </div>
+            <div class="col-8 tempDivHighlight">
+                Gap
+            </div>
+            <div class="col-1 tempDivHighlight">
+                Match E6
+            </div>
+            <div class="col-1 tempDivHighlight">
+                Gap
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-1 tempDivHighlight">
+                <p><a href='/team/?teamID=<%= standingsWest[1].id %>'><%= standingsWest[1].playoff_team_label %></a></p>
+                <p><a href='/team/?teamID=<%= standingsWest[6].id %>'><%= standingsWest[6].playoff_team_label %></a></p>
+            </div>
+            <div class="col-10 tempDivHighlight">
+                Gap
+            </div>
+            <div class="col-1 tempDivHighlight">
+                <p><a href='/team/?teamID=<%= standingsEast[1].id %>'><%= standingsEast[1].playoff_team_label %></a></p>
+                <p><a href='/team/?teamID=<%= standingsEast[6].id %>'><%= standingsEast[6].playoff_team_label %></a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Temporary list of teams in each conference -->
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-4">
@@ -23,7 +149,7 @@
                                 <tr>
                             <% } %>
                                 <td><%= i + 1 %></td>
-                                <td><a href='/team/?teamID=<%= standingsEast[i].id %>'><%= standingsEast[i].team_name %></a></td>
+                                <td><a href='/team/?teamID=<%= standingsEast[i].id %>'><%= standingsEast[i].playoff_team_label %></a></td>
                                 <td><%= standingsEast[i].team_rating %></td>
                                 <td><%= standingsEast[i].wins %></td>
                                 <td><%= standingsEast[i].losses %></td>
@@ -49,7 +175,7 @@
                                 <tr>
                             <% } %>
                                 <td><%= i + 1 %></td>
-                                <td><a href='/team/?teamID=<%= standingsEast[i].id %>'><%= standingsWest[i].team_name %></a></td>
+                                <td><a href='/team/?teamID=<%= standingsWest[i].id %>'><%= standingsWest[i].playoff_team_label %></a></td>
                                 <td><%= standingsWest[i].team_rating %></td>
                                 <td><%= standingsWest[i].wins %></td>
                                 <td><%= standingsWest[i].losses %></td>
