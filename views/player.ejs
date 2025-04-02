@@ -19,8 +19,16 @@
                     <thead>
                         <th>Season</th>
                         <th>Games Played</th>
-                        <th>Total Points</th>
+                        <th>Points</th>
                         <th>PPG</th>
+                        <th>Rebounds</th>
+                        <th>RPG</th>
+                        <th>Assists</th>
+                        <th>APG</th>
+                        <th>Steals</th>
+                        <th>SPG</th>
+                        <th>Blocks</th>
+                        <th>BPG</th>
                     </thead>
                     <tbody>
                         <% for(var i=0; i < playerDetails.length; i++) { %>
@@ -29,6 +37,14 @@
                             <td><%= playerDetails[i].games_played %></td>
                             <td><%= playerDetails[i].points_scored %></td>
                             <td><%= playerDetails[i].ppg %></td>
+                            <td><%= playerDetails[i].rebounds %></td>
+                            <td><%= playerDetails[i].rpg %></td>
+                            <td><%= playerDetails[i].assists %></td>
+                            <td><%= playerDetails[i].apg %></td>
+                            <td><%= playerDetails[i].steals %></td>
+                            <td><%= playerDetails[i].spg %></td>
+                            <td><%= playerDetails[i].blocks %></td>
+                            <td><%= playerDetails[i].bpg %></td>
                         </tr>
                         <% } %>
                     </tbody>

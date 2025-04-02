@@ -302,8 +302,16 @@ async function lookupSinglePlayerStats(playerID) {
         't.team_name, ' +
         'p.rating_ovr, ' +
         'SUM(s.points_scored) AS points_scored, ' +
+        'SUM(s.rebounds) AS rebounds, ' +
+        'SUM(s.assists) AS assists, ' +
+        'SUM(s.steals) AS steals, ' +
+        'SUM(s.blocks) AS blocks, ' +
         'COUNT(DISTINCT s.id) AS games_played, ' +
-        'ROUND(SUM(s.points_scored) / COUNT(DISTINCT s.id), 1) AS ppg ' +
+        'ROUND(SUM(s.points_scored) / COUNT(DISTINCT s.id), 1) AS ppg, ' +
+        'ROUND(SUM(s.rebounds) / COUNT(DISTINCT s.id), 1) AS rpg, ' +
+        'ROUND(SUM(s.assists) / COUNT(DISTINCT s.id), 1) AS apg, ' +
+        'ROUND(SUM(s.steals) / COUNT(DISTINCT s.id), 1) AS spg, ' +
+        'ROUND(SUM(s.blocks) / COUNT(DISTINCT s.id), 1) AS bpg ' +
         'FROM player p ' +
         'INNER JOIN team t ON p.team_id = t.id ' +
         'INNER JOIN player_match_stats s ON p.id = s.player_id ' +
