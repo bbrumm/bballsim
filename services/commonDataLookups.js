@@ -9,6 +9,7 @@ module.exports.lookupOverallRecordForTeam = lookupOverallRecordForTeam;
 module.exports.lookupNextMatchForTeam = lookupNextMatchForTeam;
 module.exports.lookupPlayerStats = lookupPlayerStats;
 module.exports.lookupSinglePlayerStats = lookupSinglePlayerStats;
+module.exports.getMatchHistory = getMatchHistory;
 
 
 async function lookupTeamDetails(teamID) {
@@ -205,3 +206,23 @@ async function lookupSinglePlayerStats(playerID) {
     }
 }
 
+async function getMatchHistory() {
+    queryString = 'SELECT ' +
+        'mr.id, ' +
+        'mr.winning_team_id, ' +
+        'tw.team_name AS winning_team_name, ' +
+        'mr.losing_team_id, ' +
+        'tl.team_name AS losing_team_name, ' +
+        'mr.winning_team_score, ' +
+        'mr.losing_team_score ' +
+        'FROM match_result mr ' +
+        'INNER JOIN team tw ON mr.winning_team_id = tw.id  ' +
+        'INNER JOIN team tl ON mr.losing_team_id = tl.id ' +
+        'ORDER BY mr.id DESC; ';
+    try {
+        const res = await client.query(queryString);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}

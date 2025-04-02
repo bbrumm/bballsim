@@ -1,0 +1,39 @@
+<%- include('header') -%>
+
+<%- include('links') -%>
+<body class="bodyStyle">
+    <h1>Match History</h1>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <table class="dataTable">
+                    <thead>
+                        <th>ID</th>
+                        <th>Winning Team</th>
+                        <th>Losing Team</th>
+                        <th>Winning Score</th>
+                        <th>Losing Score</th>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i < matchHistoryResults.length; i++) { %>
+                            <% if (chosenTeamID == matchHistoryResults[i].winning_team_id || 
+                            chosenTeamID == matchHistoryResults[i].losing_team_id) { %>
+                                <tr class="rowIsForChosenTeam">
+                            <% } else { %>
+                                <tr>
+                            <% } %>
+                                <td><%= matchHistoryResults[i].id %></td>
+                                <td><a href='/team/?teamID=<%= matchHistoryResults[i].winning_team_id %>'><%= matchHistoryResults[i].winning_team_name %></a></td>
+                                <td><a href='/team/?teamID=<%= matchHistoryResults[i].losing_team_id %>'><%= matchHistoryResults[i].losing_team_name %></a></td>
+                                <td><%= matchHistoryResults[i].winning_team_score %></td>
+                                <td><%= matchHistoryResults[i].losing_team_score %></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

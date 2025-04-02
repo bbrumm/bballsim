@@ -344,3 +344,22 @@ p.id, p.first_name, p.last_name, p.rating_ovr, t.team_name
 FROM player p
 INNER JOIN team t ON p.team_id = t.id
 ORDER BY rating_ovr ASC;
+
+/*
+ * Get match history
+ */
+
+SELECT * FROM match_result mr;
+
+SELECT
+mr.id,
+mr.winning_team_id,
+tw.team_name AS winning_team_name,
+mr.losing_team_id,
+tl.team_name AS losing_team_name,
+mr.winning_team_score,
+mr.losing_team_score
+FROM match_result mr
+INNER JOIN team tw ON mr.winning_team_id = tw.id 
+INNER JOIN team tl ON mr.losing_team_id = tl.id
+ORDER BY mr.id DESC;

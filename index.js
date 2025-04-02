@@ -11,6 +11,7 @@ const teamModule = require(__dirname + "/services/teamModule");
 const statsModule = require(__dirname + "/services/statsModule");
 const homeModule = require(__dirname + "/services/homeModule");
 const playerModule = require(__dirname + "/services/playerModule");
+const matchHistoryModule = require(__dirname + "/services/matchHistoryModule");
 
 app.set('view engine', 'ejs');
 
@@ -47,6 +48,10 @@ app.get('/match_sim', (req, res) => {
 
 app.post('/match_sim_result', (req, res) => {
     matchSimModule.showResultsOfMatchSim(req, res);
+});
+
+app.get('/match_history', (req, res) => {
+  matchHistoryModule.showMatchHistory(req, res);
 });
 
 app.get('/team/', (req, res) => {
