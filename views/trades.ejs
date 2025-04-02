@@ -1,0 +1,52 @@
+<%- include('header') -%>
+
+<%- include('links') -%>
+
+<body class="bodyStyle">
+    <h1>Trades</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <h2>Your Team</h2>
+            <table class="dataTable">
+                <thead>
+                    <th>Player Name</th>
+                    <th>Overall Rating</th>
+                    <th>Salary</th>
+                </thead>
+                <tbody>
+                    <% for(var i=0; i < playerDetailsForTeam.length; i++) { %>
+                        <tr>
+                            <td><a href='/player/?playerID=<%= playerDetailsForTeam[i].id %>'><%= playerDetailsForTeam[i].first_name %> <%= playerDetailsForTeam[i].last_name %></a></td>
+                            <td><%= playerDetailsForTeam[i].rating_ovr %></td>
+                            <td><%= playerDetailsForTeam[i].annual_salary %></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-6">
+            <h2>Open to Trade</h2>
+            <table class="dataTable">
+                <thead>
+                    <th>Player Name</th>
+                    <th>Overall Rating</th>
+                    <th>Team Name</th>
+                    <th>Salary</th>
+                </thead>
+                <tbody>
+                    <% for(var i=0; i < playersOpenToTrade.length; i++) { %>
+                        <tr>
+                            <td><a href='/player/?playerID=<%= playersOpenToTrade[i].id %>'><%= playersOpenToTrade[i].first_name %> <%= playersOpenToTrade[i].last_name %></a></td>
+                            <td><%= playersOpenToTrade[i].rating_ovr %></td>
+                            <td><%= playersOpenToTrade[i].team_name %></td>
+                            <td><%= playersOpenToTrade[i].annual_salary %></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

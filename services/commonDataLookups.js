@@ -19,6 +19,7 @@ module.exports.lookupNextMatch = lookupNextMatch;
 module.exports.lookupTeamFinances = lookupTeamFinances;
 module.exports.lookupTotalTeamSalary = lookupTotalTeamSalary;
 module.exports.lookupNumberOfRemainingMatchesForTeam = lookupNumberOfRemainingMatchesForTeam;
+module.exports.lookupOpenToTradePlayers = lookupOpenToTradePlayers;
 
 
 
@@ -83,7 +84,9 @@ async function lookupPlayerDetailsForTeam(teamID) {
         'SUM(COALESCE(s.rebounds, 0)) AS rebounds, ' +
         'SUM(COALESCE(s.assists, 0)) AS assists, ' +
         'SUM(COALESCE(s.steals, 0)) AS steals, ' +
-        'SUM(COALESCE(s.blocks, 0)) AS blocks ' +
+        'SUM(COALESCE(s.blocks, 0)) AS blocks, ' +
+        'COUNT(DISTINCT s.id) AS games_played, ' +
+        'ROUND(SUM(s.points_scored) / COUNT(DISTINCT s.id), 1) AS ppg ' +
         'FROM player p ' +
         'INNER JOIN team t ON p.team_id = t.id ' +
         'LEFT JOIN player_match_stats s ON p.id = s.player_id ' +
@@ -434,6 +437,26 @@ async function lookupNumberOfRemainingMatchesForTeam(teamID) {
         'FROM match_result mr ' +
         'WHERE (team1_id = $1 OR team2_id = $1) ' +
         'AND winning_team_id IS NULL;';
+    try {
+        const res = await client.query(queryString, [teamID]);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function lookupOpenToTradePlayers(teamID) {
+    queryString = 'SELECT ' +
+        'p.id, ' +
+        'p.first_name, ' +
+        'p.last_name, ' +
+        'p.rating_ovr, ' +
+        'p.annual_salary, ' +
+        't.team_name  ' +
+        'FROM player p ' +
+        'INNER JOIN team t ON p.team_id = t.id ' +
+        'WHERE p.open_to_trade = TRUE ' +
+        'AND t.id != $1;';
     try {
         const res = await client.query(queryString, [teamID]);
         return res.rows;
