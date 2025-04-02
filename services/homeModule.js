@@ -18,6 +18,7 @@ async function showHome(req, res) {
         teamDetails: teamDetails,
         teamID: chosenTeamID,
         teamMatchResults: teamMatchResults,
+        playerDetails: playerDetails,
         teamOverallPosition: teamOverallPosition,
         nextMatchOpponent: nextMatchOpponent
     });

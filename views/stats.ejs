@@ -18,19 +18,54 @@
                         <th>PPG</th>
                     </thead>
                     <tbody>
-                        <% for(var i=0; i < playerStats.length; i++) { %>
-                            <% if (chosenTeamID == playerStats[i].team_id) { %>
+                        <% for(var i=0; i < playerStatsPoints.length; i++) { %>
+                            <% if (chosenTeamID == playerStatsPoints[i].team_id) { %>
                                 <tr class="rowIsForChosenTeam">
                             <% } else { %>
                                 <tr>
                             <% } %>
                                 <td><%= i + 1 %></td>
-                                <td><a href='/player/?playerID=<%= playerStats[i].id %>' class="link-primary"><%= playerStats[i].first_name %> <%= playerStats[i].last_name %></a></td>
-                                <td><%= playerStats[i].rating_ovr %></td>
-                                <td><a href='/team/?teamID=<%= playerStats[i].team_id %>'><%= playerStats[i].team_name %></a></td>
-                                <td><%= playerStats[i].games_played %></td>
-                                <td><%= playerStats[i].points_scored %></td>
-                                <td><%= playerStats[i].ppg %></td>
+                                <td><a href='/player/?playerID=<%= playerStatsPoints[i].id %>' class="link-primary"><%= playerStatsPoints[i].first_name %> <%= playerStatsPoints[i].last_name %></a></td>
+                                <td><%= playerStatsPoints[i].rating_ovr %></td>
+                                <td><a href='/team/?teamID=<%= playerStatsPoints[i].team_id %>'><%= playerStatsPoints[i].team_name %></a></td>
+                                <td><%= playerStatsPoints[i].games_played %></td>
+                                <td><%= playerStatsPoints[i].points_scored %></td>
+                                <td><%= playerStatsPoints[i].ppg %></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <h2>Rebounds</h2>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <table class="dataTable">
+                    <thead>
+                        <th>Pos.</th>
+                        <th>Player Name</th>
+                        <th>Rating</th>
+                        <th>Team</th>
+                        <th>Games Played</th>
+                        <th>Total Rebounds</th>
+                        <th>RPG</th>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i < playerStatsRebounds.length; i++) { %>
+                            <% if (chosenTeamID == playerStatsRebounds[i].team_id) { %>
+                                <tr class="rowIsForChosenTeam">
+                            <% } else { %>
+                                <tr>
+                            <% } %>
+                                <td><%= i + 1 %></td>
+                                <td><a href='/player/?playerID=<%= playerStatsRebounds[i].id %>' class="link-primary"><%= playerStatsRebounds[i].first_name %> <%= playerStatsRebounds[i].last_name %></a></td>
+                                <td><%= playerStatsRebounds[i].rating_ovr %></td>
+                                <td><a href='/team/?teamID=<%= playerStatsRebounds[i].team_id %>'><%= playerStatsRebounds[i].team_name %></a></td>
+                                <td><%= playerStatsRebounds[i].games_played %></td>
+                                <td><%= playerStatsRebounds[i].rebounds %></td>
+                                <td><%= playerStatsRebounds[i].rpg %></td>
                             </tr>
                         <% } %>
                     </tbody>

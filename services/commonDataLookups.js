@@ -7,9 +7,11 @@ module.exports.lookupPlayerDetailsForTeam = lookupPlayerDetailsForTeam;
 module.exports.lookupChosenTeamID = lookupChosenTeamID;
 module.exports.lookupOverallRecordForTeam = lookupOverallRecordForTeam;
 module.exports.lookupNextMatchForTeam = lookupNextMatchForTeam;
-module.exports.lookupPlayerStats = lookupPlayerStats;
+module.exports.lookupPlayerStatsPoints = lookupPlayerStatsPoints;
+module.exports.lookupPlayerStatsRebounds = lookupPlayerStatsRebounds;
 module.exports.lookupSinglePlayerStats = lookupSinglePlayerStats;
 module.exports.getMatchHistory = getMatchHistory;
+
 
 
 async function lookupTeamDetails(teamID) {
@@ -68,7 +70,8 @@ async function lookupPlayerDetailsForTeam(teamID) {
         'p.first_name, ' +
         'p.last_name, ' +
         'p.rating_ovr, ' +
-        'SUM(s.points_scored) AS points_scored ' +
+        'SUM(s.points_scored) AS points_scored, ' +
+        'SUM(COALESCE(s.rebounds, 0)) AS rebounds ' +
         'FROM player p ' +
         'INNER JOIN team t ON p.team_id = t.id ' +
         'LEFT JOIN player_match_stats s ON p.id = s.player_id ' +
@@ -157,7 +160,7 @@ async function lookupPlayerDetails(playerID) {
 */
 
 
-async function lookupPlayerStats() {
+async function lookupPlayerStatsPoints() {
     queryString = 'SELECT ' +
         'p.id, ' +
         'p.first_name, ' +
@@ -172,7 +175,33 @@ async function lookupPlayerStats() {
         'INNER JOIN team t ON p.team_id = t.id ' +
         'INNER JOIN player_match_stats s ON p.id = s.player_id ' +
         'GROUP BY p.id, p.first_name, p.last_name, p.rating_ovr, t.team_name, t.id ' +
-        'ORDER BY SUM(s.points_scored) DESC;';
+        'ORDER BY SUM(s.points_scored) DESC LIMIT 20;';
+    try {
+        const res = await client.query(queryString);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+async function lookupPlayerStatsRebounds() {
+    queryString = 'SELECT ' +
+        'p.id, ' +
+        'p.first_name, ' +
+        'p.last_name, ' +
+        't.id AS team_id, ' +
+        't.team_name, ' +
+        'p.rating_ovr, ' +
+        'SUM(s.rebounds) AS rebounds, ' +
+        'COUNT(DISTINCT s.id) AS games_played, ' +
+        'ROUND(SUM(s.rebounds) / COUNT(DISTINCT s.id), 1) AS rpg ' +
+        'FROM player p ' +
+        'INNER JOIN team t ON p.team_id = t.id ' +
+        'INNER JOIN player_match_stats s ON p.id = s.player_id ' +
+        'WHERE s.rebounds IS NOT NULL ' +
+        'GROUP BY p.id, p.first_name, p.last_name, p.rating_ovr, t.team_name, t.id ' +
+        'ORDER BY SUM(s.rebounds) DESC LIMIT 20;';
     try {
         const res = await client.query(queryString);
         return res.rows;

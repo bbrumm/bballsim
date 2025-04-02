@@ -140,6 +140,7 @@ async function calculatePlayerMatchStats(teamID) {
     //Loop through players and calculate a score for them
     for (i = 0; i < teamPlayers.length; i++) {
         teamPlayers[i].points = await calculatePlayerPoints(teamPlayers[i].rating_ovr);
+        teamPlayers[i].rebounds = await calculatePlayerRebounds(teamPlayers[i].rating_ovr);
     }
     return teamPlayers;
 
@@ -168,6 +169,14 @@ async function calculateTeamScore(teamPlayerMatchStats) {
 async function calculatePlayerPoints(playerRating) {
     min = 0;
     max = 30;
+    baseScore = Math.floor(Math.random() * (max - min + 1)) + min;
+    finalScore = Math.round(baseScore * playerRating / 100, 0);
+    return finalScore;
+}
+
+async function calculatePlayerRebounds(playerRating) {
+    min = 0;
+    max = 20;
     baseScore = Math.floor(Math.random() * (max - min + 1)) + min;
     finalScore = Math.round(baseScore * playerRating / 100, 0);
     return finalScore;
@@ -255,15 +264,21 @@ async function insertPlayerStats(matchResultID, teamPlayerMatchStats) {
     //We do this one by one, as the pg library does not support bulk insert
     //I could use a different library, but it's probably not worth it for the small volumes of data here.
     for (i = 0; i < teamPlayerMatchStats.length; i++) {
-        queryString = "INSERT INTO player_match_stats (match_result_id, player_id, points_scored) VALUES ($1, $2, $3);";
-        console.log("Insert Match Stats query: " + queryString);
-        console.log("Match Result ID: " + matchResultID);
-        console.log("Player ID: " + teamPlayerMatchStats[i].id);
-        console.log("Player Points: " + teamPlayerMatchStats[i].points);
+        queryString = "INSERT INTO player_match_stats " +
+            "(match_result_id, player_id, points_scored, rebounds) " +
+            "VALUES ($1, $2, $3, $4);";
+        //console.log("Insert Match Stats query: " + queryString);
+        //console.log("Match Result ID: " + matchResultID);
+        //console.log("Player ID: " + teamPlayerMatchStats[i].id);
+        //console.log("Player Points: " + teamPlayerMatchStats[i].points);
         try {
             result = await client.query(
                 queryString, 
-                [matchResultID, teamPlayerMatchStats[i].id, teamPlayerMatchStats[i].points]
+                [matchResultID, 
+                teamPlayerMatchStats[i].id, 
+                teamPlayerMatchStats[i].points, 
+                teamPlayerMatchStats[i].rebounds
+                ]
             );
         } catch (error) {
             console.error(error.stack);

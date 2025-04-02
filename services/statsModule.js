@@ -7,7 +7,8 @@ module.exports.showStats = showStats;
 
 
 async function showStats(req, res) {
-    playerStats = await commonDataLookups.lookupPlayerStats();
+    playerStatsPoints = await commonDataLookups.lookupPlayerStatsPoints();
+    playerStatsRebounds = await commonDataLookups.lookupPlayerStatsRebounds();
     gameParameters = await commonDataLookups.lookupChosenTeamID();
     chosenTeamID = gameParameters[0].team_id_chosen;
 
@@ -15,7 +16,8 @@ async function showStats(req, res) {
     //console.log('chosenTeamID: ' + chosenTeamID);
 
     res.render('stats', {
-        playerStats: playerStats,
+        playerStatsPoints: playerStatsPoints,
+        playerStatsRebounds: playerStatsRebounds,
         chosenTeamID: chosenTeamID
     });
 }
