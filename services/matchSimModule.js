@@ -141,6 +141,9 @@ async function calculatePlayerMatchStats(teamID) {
     for (i = 0; i < teamPlayers.length; i++) {
         teamPlayers[i].points = await calculatePlayerPoints(teamPlayers[i].rating_ovr);
         teamPlayers[i].rebounds = await calculatePlayerRebounds(teamPlayers[i].rating_ovr);
+        teamPlayers[i].assists = await calculatePlayerAssists(teamPlayers[i].rating_ovr);
+        teamPlayers[i].steals = await calculatePlayerSteals(teamPlayers[i].rating_ovr);
+        teamPlayers[i].blocks = await calculatePlayerBlocks(teamPlayers[i].rating_ovr);
     }
     return teamPlayers;
 
@@ -177,6 +180,30 @@ async function calculatePlayerPoints(playerRating) {
 async function calculatePlayerRebounds(playerRating) {
     min = 0;
     max = 20;
+    baseScore = Math.floor(Math.random() * (max - min + 1)) + min;
+    finalScore = Math.round(baseScore * playerRating / 100, 0);
+    return finalScore;
+}
+
+async function calculatePlayerAssists(playerRating) {
+    min = 0;
+    max = 15;
+    baseScore = Math.floor(Math.random() * (max - min + 1)) + min;
+    finalScore = Math.round(baseScore * playerRating / 100, 0);
+    return finalScore;
+}
+
+async function calculatePlayerSteals(playerRating) {
+    min = 0;
+    max = 5;
+    baseScore = Math.floor(Math.random() * (max - min + 1)) + min;
+    finalScore = Math.round(baseScore * playerRating / 100, 0);
+    return finalScore;
+}
+
+async function calculatePlayerBlocks(playerRating) {
+    min = 0;
+    max = 15;
     baseScore = Math.floor(Math.random() * (max - min + 1)) + min;
     finalScore = Math.round(baseScore * playerRating / 100, 0);
     return finalScore;
@@ -265,8 +292,8 @@ async function insertPlayerStats(matchResultID, teamPlayerMatchStats) {
     //I could use a different library, but it's probably not worth it for the small volumes of data here.
     for (i = 0; i < teamPlayerMatchStats.length; i++) {
         queryString = "INSERT INTO player_match_stats " +
-            "(match_result_id, player_id, points_scored, rebounds) " +
-            "VALUES ($1, $2, $3, $4);";
+            "(match_result_id, player_id, points_scored, rebounds, assists, steals, blocks) " +
+            "VALUES ($1, $2, $3, $4, $5, $6, $7);";
         //console.log("Insert Match Stats query: " + queryString);
         //console.log("Match Result ID: " + matchResultID);
         //console.log("Player ID: " + teamPlayerMatchStats[i].id);
@@ -277,7 +304,10 @@ async function insertPlayerStats(matchResultID, teamPlayerMatchStats) {
                 [matchResultID, 
                 teamPlayerMatchStats[i].id, 
                 teamPlayerMatchStats[i].points, 
-                teamPlayerMatchStats[i].rebounds
+                teamPlayerMatchStats[i].rebounds,
+                teamPlayerMatchStats[i].assists,
+                teamPlayerMatchStats[i].steals,
+                teamPlayerMatchStats[i].blocks
                 ]
             );
         } catch (error) {

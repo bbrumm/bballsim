@@ -54,8 +54,11 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Rating (OVR)</th>
-                        <th>Total Points</th>
-                        <th>Total Rebounds</th>
+                        <th>Points</th>
+                        <th>Rebounds</th>
+                        <th>Assists</th>
+                        <th>Steals</th>
+                        <th>Blocks</th>
                     </thead>
                     <tbody>
                         <% for(var i=0; i < playerDetails.length; i++) { %>
@@ -65,6 +68,9 @@
                                 <td><%= playerDetails[i].rating_ovr %></td>
                                 <td><%= playerDetails[i].points_scored %></td>
                                 <td><%= playerDetails[i].rebounds %></td>
+                                <td><%= playerDetails[i].assists %></td>
+                                <td><%= playerDetails[i].steals %></td>
+                                <td><%= playerDetails[i].blocks %></td>
                             </tr>
                         <% } %>
                     </tbody>

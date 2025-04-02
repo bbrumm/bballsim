@@ -9,6 +9,9 @@ module.exports.lookupOverallRecordForTeam = lookupOverallRecordForTeam;
 module.exports.lookupNextMatchForTeam = lookupNextMatchForTeam;
 module.exports.lookupPlayerStatsPoints = lookupPlayerStatsPoints;
 module.exports.lookupPlayerStatsRebounds = lookupPlayerStatsRebounds;
+module.exports.lookupPlayerStatsAssists = lookupPlayerStatsAssists;
+module.exports.lookupPlayerStatsSteals = lookupPlayerStatsSteals;
+module.exports.lookupPlayerStatsBlocks = lookupPlayerStatsBlocks;
 module.exports.lookupSinglePlayerStats = lookupSinglePlayerStats;
 module.exports.getMatchHistory = getMatchHistory;
 
@@ -71,7 +74,10 @@ async function lookupPlayerDetailsForTeam(teamID) {
         'p.last_name, ' +
         'p.rating_ovr, ' +
         'SUM(s.points_scored) AS points_scored, ' +
-        'SUM(COALESCE(s.rebounds, 0)) AS rebounds ' +
+        'SUM(COALESCE(s.rebounds, 0)) AS rebounds, ' +
+        'SUM(COALESCE(s.assists, 0)) AS assists, ' +
+        'SUM(COALESCE(s.steals, 0)) AS steals, ' +
+        'SUM(COALESCE(s.blocks, 0)) AS blocks ' +
         'FROM player p ' +
         'INNER JOIN team t ON p.team_id = t.id ' +
         'LEFT JOIN player_match_stats s ON p.id = s.player_id ' +
@@ -202,6 +208,83 @@ async function lookupPlayerStatsRebounds() {
         'WHERE s.rebounds IS NOT NULL ' +
         'GROUP BY p.id, p.first_name, p.last_name, p.rating_ovr, t.team_name, t.id ' +
         'ORDER BY SUM(s.rebounds) DESC LIMIT 20;';
+    try {
+        const res = await client.query(queryString);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+async function lookupPlayerStatsAssists() {
+    queryString = 'SELECT ' +
+        'p.id, ' +
+        'p.first_name, ' +
+        'p.last_name, ' +
+        't.id AS team_id, ' +
+        't.team_name, ' +
+        'p.rating_ovr, ' +
+        'SUM(s.assists) AS assists, ' +
+        'COUNT(DISTINCT s.id) AS games_played, ' +
+        'ROUND(SUM(s.assists) / COUNT(DISTINCT s.id), 1) AS apg ' +
+        'FROM player p ' +
+        'INNER JOIN team t ON p.team_id = t.id ' +
+        'INNER JOIN player_match_stats s ON p.id = s.player_id ' +
+        'WHERE s.assists IS NOT NULL ' +
+        'GROUP BY p.id, p.first_name, p.last_name, p.rating_ovr, t.team_name, t.id ' +
+        'ORDER BY SUM(s.assists) DESC LIMIT 20;';
+    try {
+        const res = await client.query(queryString);
+        console.log('Assists Query: ' + queryString);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function lookupPlayerStatsSteals() {
+    queryString = 'SELECT ' +
+        'p.id, ' +
+        'p.first_name, ' +
+        'p.last_name, ' +
+        't.id AS team_id, ' +
+        't.team_name, ' +
+        'p.rating_ovr, ' +
+        'SUM(s.steals) AS steals, ' +
+        'COUNT(DISTINCT s.id) AS games_played, ' +
+        'ROUND(SUM(s.steals) / COUNT(DISTINCT s.id), 1) AS spg ' +
+        'FROM player p ' +
+        'INNER JOIN team t ON p.team_id = t.id ' +
+        'INNER JOIN player_match_stats s ON p.id = s.player_id ' +
+        'WHERE s.steals IS NOT NULL ' +
+        'GROUP BY p.id, p.first_name, p.last_name, p.rating_ovr, t.team_name, t.id ' +
+        'ORDER BY SUM(s.steals) DESC LIMIT 20;';
+    try {
+        const res = await client.query(queryString);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function lookupPlayerStatsBlocks() {
+    queryString = 'SELECT ' +
+        'p.id, ' +
+        'p.first_name, ' +
+        'p.last_name, ' +
+        't.id AS team_id, ' +
+        't.team_name, ' +
+        'p.rating_ovr, ' +
+        'SUM(s.blocks) AS blocks, ' +
+        'COUNT(DISTINCT s.id) AS games_played, ' +
+        'ROUND(SUM(s.blocks) / COUNT(DISTINCT s.id), 1) AS bpg ' +
+        'FROM player p ' +
+        'INNER JOIN team t ON p.team_id = t.id ' +
+        'INNER JOIN player_match_stats s ON p.id = s.player_id ' +
+        'WHERE s.blocks IS NOT NULL ' +
+        'GROUP BY p.id, p.first_name, p.last_name, p.rating_ovr, t.team_name, t.id ' +
+        'ORDER BY SUM(s.blocks) DESC LIMIT 20;';
     try {
         const res = await client.query(queryString);
         return res.rows;

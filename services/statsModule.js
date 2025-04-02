@@ -9,6 +9,9 @@ module.exports.showStats = showStats;
 async function showStats(req, res) {
     playerStatsPoints = await commonDataLookups.lookupPlayerStatsPoints();
     playerStatsRebounds = await commonDataLookups.lookupPlayerStatsRebounds();
+    playerStatsAssists = await commonDataLookups.lookupPlayerStatsAssists();
+    playerStatsSteals = await commonDataLookups.lookupPlayerStatsSteals();
+    playerStatsBlocks = await commonDataLookups.lookupPlayerStatsBlocks();
     gameParameters = await commonDataLookups.lookupChosenTeamID();
     chosenTeamID = gameParameters[0].team_id_chosen;
 
@@ -18,6 +21,9 @@ async function showStats(req, res) {
     res.render('stats', {
         playerStatsPoints: playerStatsPoints,
         playerStatsRebounds: playerStatsRebounds,
+        playerStatsAssists: playerStatsAssists,
+        playerStatsSteals: playerStatsSteals,
+        playerStatsBlocks: playerStatsBlocks,
         chosenTeamID: chosenTeamID
     });
 }
