@@ -1,0 +1,67 @@
+<%- include('header') -%>
+
+<%- include('links') -%>
+<body class="bodyStyle">
+    <h1>Playoffs</h1>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <h2>Eastern Conference</h2>
+                <table class="dataTable">
+                    <thead>
+                        <th>Pos.</th>
+                        <th>Team</th>
+                        <th>Rating</th>
+                        <th>Wins</th>
+                        <th>Losses</th>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i < 8; i++) { %>
+                            <% if (chosenTeamID == standingsEast[i].id) { %>
+                                <tr class="rowIsForChosenTeam">
+                            <% } else { %>
+                                <tr>
+                            <% } %>
+                                <td><%= i + 1 %></td>
+                                <td><a href='/team/?teamID=<%= standingsEast[i].id %>'><%= standingsEast[i].team_name %></a></td>
+                                <td><%= standingsEast[i].team_rating %></td>
+                                <td><%= standingsEast[i].wins %></td>
+                                <td><%= standingsEast[i].losses %></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <br />
+                <h2>Western Conference</h2>
+                <table class="dataTable">
+                    <thead>
+                        <th>Pos.</th>
+                        <th>Team</th>
+                        <th>Rating</th>
+                        <th>Wins</th>
+                        <th>Losses</th>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i < 8; i++) { %>
+                            <% if (chosenTeamID == standingsWest[i].id) { %>
+                                <tr class="rowIsForChosenTeam">
+                            <% } else { %>
+                                <tr>
+                            <% } %>
+                                <td><%= i + 1 %></td>
+                                <td><a href='/team/?teamID=<%= standingsEast[i].id %>'><%= standingsWest[i].team_name %></a></td>
+                                <td><%= standingsWest[i].team_rating %></td>
+                                <td><%= standingsWest[i].wins %></td>
+                                <td><%= standingsWest[i].losses %></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+
+                
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
