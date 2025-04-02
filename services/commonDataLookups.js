@@ -18,6 +18,7 @@ module.exports.lookupStandings = lookupStandings;
 module.exports.lookupNextMatch = lookupNextMatch;
 module.exports.lookupTeamFinances = lookupTeamFinances;
 module.exports.lookupTotalTeamSalary = lookupTotalTeamSalary;
+module.exports.lookupNumberOfRemainingMatchesForTeam = lookupNumberOfRemainingMatchesForTeam;
 
 
 
@@ -420,6 +421,19 @@ async function lookupTotalTeamSalary(teamID) {
     queryString = 'SELECT SUM(annual_salary) AS total_salary ' +
         'FROM player ' +
         'WHERE team_id = $1';
+    try {
+        const res = await client.query(queryString, [teamID]);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function lookupNumberOfRemainingMatchesForTeam(teamID) {
+    queryString = 'SELECT COUNT(*) AS match_count ' +
+        'FROM match_result mr ' +
+        'WHERE (team1_id = $1 OR team2_id = $1) ' +
+        'AND winning_team_id IS NULL;';
     try {
         const res = await client.query(queryString, [teamID]);
         return res.rows;
