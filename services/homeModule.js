@@ -11,7 +11,9 @@ async function showHome(req, res) {
     playerDetails = await commonDataLookups.lookupPlayerDetailsForTeam(chosenTeamID);
     teamOverallPosition = await commonDataLookups.lookupOverallRecordForTeam(chosenTeamID);
     nextMatchDetails = await commonDataLookups.lookupNextMatchForTeam(chosenTeamID);
+    nextMatchForAnyTeam = await commonDataLookups.lookupNextMatch();
 
+    numberOfMatchesUntilNextForTeam = nextMatchDetails[0].match_result_id - nextMatchForAnyTeam[0].match_result_id
     nextMatchOpponent = await calculateNextMatchOpponent(chosenTeamID, nextMatchDetails);
 
     res.render('home', {
@@ -20,7 +22,8 @@ async function showHome(req, res) {
         teamMatchResults: teamMatchResults,
         playerDetails: playerDetails,
         teamOverallPosition: teamOverallPosition,
-        nextMatchOpponent: nextMatchOpponent
+        nextMatchOpponent: nextMatchOpponent,
+        numberOfMatchesUntilNextForTeam: numberOfMatchesUntilNextForTeam
     });
 }
 

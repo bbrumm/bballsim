@@ -16,7 +16,7 @@ async function showMatchSim(req, res) {
 
     
     //Show teams regardless of button being clicked
-    let nextMatchDetails = await loadNextMatch();
+    let nextMatchDetails = await commonDataLookups.lookupNextMatch();
     isNextMatchIncludeChosenTeam = await calculateIsNextMatchIncludeChosenTeam(chosenTeamID, nextMatchDetails);
 
     team1OverallPosition = await commonDataLookups.lookupOverallRecordForTeam(nextMatchDetails[0].team1_id);
@@ -69,8 +69,12 @@ async function showResultsOfMatchSim(req, res) {
     resultOfInsert = await storeMatchSimResult(matchResultID, winningTeamID, losingTeamID, winningTeamScore, losingTeamScore, team1PlayerMatchStats, team2PlayerMatchStats);
     console.log('Match result inserted, response is ', resultOfInsert);
 
-    let nextMatchDetails = await loadNextMatch();
+    let nextMatchDetails = await commonDataLookups.lookupNextMatch();
     isNextMatchIncludeChosenTeam = await calculateIsNextMatchIncludeChosenTeam(chosenTeamID, nextMatchDetails);
+
+    team1OverallPosition = await commonDataLookups.lookupOverallRecordForTeam(nextMatchDetails[0].team1_id);
+    team2OverallPosition = await commonDataLookups.lookupOverallRecordForTeam(nextMatchDetails[0].team2_id);
+
 
     res.render('match_sim', {
         nextMatchDetails: nextMatchDetails,
@@ -81,39 +85,14 @@ async function showResultsOfMatchSim(req, res) {
         losingTeamScore: losingTeamScore,
         winningTeamName: winningTeamName,
         losingTeamName: losingTeamName,
-        isNextMatchIncludeChosenTeam: isNextMatchIncludeChosenTeam
+        isNextMatchIncludeChosenTeam: isNextMatchIncludeChosenTeam,
+        team1OverallPosition: team1OverallPosition,
+        team2OverallPosition: team2OverallPosition
     });
 
 }
 
-const loadNextMatch = async () => {
-    //queryString = 'SELECT id, team_name, team_rating FROM team ORDER BY RANDOM() LIMIT 2';
-    queryString = 'SELECT ' +
-        'mr.id AS match_result_id, ' +
-        'mr.team1_id, ' +
-        't1.team_name AS team1_name, ' +
-        't1.team_rating AS team1_rating, ' +
-        't1.image_filename AS team1_image_filename, ' +
-        'team2_id,' +
-        't2.team_name AS team2_name, ' +
-        't2.team_rating AS team2_rating, ' +
-        't2.image_filename AS team2_image_filename ' +
-        'FROM match_result mr ' +
-        'INNER JOIN team t1 ON mr.team1_id = t1.id ' +
-        'INNER JOIN team t2 ON mr.team2_id = t2.id ' +
-        '    WHERE mr.id = ( ' +
-        '    SELECT MIN(id) ' +
-        '    FROM match_result ' +
-        '    WHERE winning_team_id IS NULL ' +
-        ');';
-    console.log('loadNextMatch queryString: ' + queryString)
-    try {
-        const res = await client.query(queryString);
-        return res.rows;
-    } catch (error) {
-        console.log(error)
-    }
-}
+
 
 async function lookupTeamDetails(teamID) {
     queryString = 'SELECT team_name FROM team WHERE id = $1';

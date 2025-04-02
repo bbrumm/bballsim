@@ -15,6 +15,7 @@ module.exports.lookupPlayerStatsBlocks = lookupPlayerStatsBlocks;
 module.exports.lookupSinglePlayerStats = lookupSinglePlayerStats;
 module.exports.getMatchHistory = getMatchHistory;
 module.exports.lookupStandings = lookupStandings;
+module.exports.lookupNextMatch = lookupNextMatch;
 
 
 
@@ -367,6 +368,34 @@ async function lookupStandings(conference_id) {
         "ORDER BY wins DESC, losses ASC, points_for DESC, points_against ASC;";
     try {
         const res = await client.query(queryString, [conference_id]);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function lookupNextMatch() {
+    queryString = 'SELECT ' +
+        'mr.id AS match_result_id, ' +
+        'mr.team1_id, ' +
+        't1.team_name AS team1_name, ' +
+        't1.team_rating AS team1_rating, ' +
+        't1.image_filename AS team1_image_filename, ' +
+        'team2_id,' +
+        't2.team_name AS team2_name, ' +
+        't2.team_rating AS team2_rating, ' +
+        't2.image_filename AS team2_image_filename ' +
+        'FROM match_result mr ' +
+        'INNER JOIN team t1 ON mr.team1_id = t1.id ' +
+        'INNER JOIN team t2 ON mr.team2_id = t2.id ' +
+        '    WHERE mr.id = ( ' +
+        '    SELECT MIN(id) ' +
+        '    FROM match_result ' +
+        '    WHERE winning_team_id IS NULL ' +
+        ');';
+    console.log('loadNextMatch queryString: ' + queryString)
+    try {
+        const res = await client.query(queryString);
         return res.rows;
     } catch (error) {
         console.log(error)
