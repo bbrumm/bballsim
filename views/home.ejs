@@ -61,6 +61,7 @@
                         <th>Assists</th>
                         <th>Steals</th>
                         <th>Blocks</th>
+                        <th>Salary</th>
                     </thead>
                     <tbody>
                         <% for(var i=0; i < playerDetails.length; i++) { %>
@@ -73,6 +74,7 @@
                                 <td><%= playerDetails[i].assists %></td>
                                 <td><%= playerDetails[i].steals %></td>
                                 <td><%= playerDetails[i].blocks %></td>
+                                <td><%= playerDetails[i].annual_salary %></td>
                             </tr>
                         <% } %>
                     </tbody>

@@ -13,6 +13,7 @@ const homeModule = require(__dirname + "/services/homeModule");
 const playerModule = require(__dirname + "/services/playerModule");
 const matchHistoryModule = require(__dirname + "/services/matchHistoryModule");
 const playoffsModule = require(__dirname + "/services/playoffsModule");
+const financesModule = require(__dirname + "/services/financesModule");
 
 app.set('view engine', 'ejs');
 
@@ -45,6 +46,10 @@ app.get('/standings_conf/', (req, res) => {
 
 app.get('/home/', (req, res) => {
   homeModule.showHome(req, res);
+});
+
+app.get('/finances/', (req, res) => {
+  financesModule.showFinances(req, res);
 });
 
 app.get('/match_sim', (req, res) => {

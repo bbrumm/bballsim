@@ -16,6 +16,8 @@ module.exports.lookupSinglePlayerStats = lookupSinglePlayerStats;
 module.exports.getMatchHistory = getMatchHistory;
 module.exports.lookupStandings = lookupStandings;
 module.exports.lookupNextMatch = lookupNextMatch;
+module.exports.lookupTeamFinances = lookupTeamFinances;
+module.exports.lookupTotalTeamSalary = lookupTotalTeamSalary;
 
 
 
@@ -75,6 +77,7 @@ async function lookupPlayerDetailsForTeam(teamID) {
         'p.first_name, ' +
         'p.last_name, ' +
         'p.rating_ovr, ' +
+        'p.annual_salary, ' +
         'SUM(s.points_scored) AS points_scored, ' +
         'SUM(COALESCE(s.rebounds, 0)) AS rebounds, ' +
         'SUM(COALESCE(s.assists, 0)) AS assists, ' +
@@ -84,7 +87,7 @@ async function lookupPlayerDetailsForTeam(teamID) {
         'INNER JOIN team t ON p.team_id = t.id ' +
         'LEFT JOIN player_match_stats s ON p.id = s.player_id ' +
         'WHERE t.id = $1 ' +
-        'GROUP BY p.id, p.first_name, p.last_name, p.rating_ovr ' +
+        'GROUP BY p.id, p.first_name, p.last_name, p.rating_ovr, p.annual_salary ' +
         'ORDER BY p.rating_ovr DESC;';
     try {
         const res = await client.query(queryString, [teamID]);
@@ -393,9 +396,32 @@ async function lookupNextMatch() {
         '    FROM match_result ' +
         '    WHERE winning_team_id IS NULL ' +
         ');';
-    console.log('loadNextMatch queryString: ' + queryString)
     try {
         const res = await client.query(queryString);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+async function lookupTeamFinances() {
+    queryString = 'SELECT team_bank_balance, income_per_game ' +
+        'FROM game_parameters;';
+    try {
+        const res = await client.query(queryString);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function lookupTotalTeamSalary(teamID) {
+    queryString = 'SELECT SUM(annual_salary) AS total_salary ' +
+        'FROM player ' +
+        'WHERE team_id = $1';
+    try {
+        const res = await client.query(queryString, [teamID]);
         return res.rows;
     } catch (error) {
         console.log(error)

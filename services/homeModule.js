@@ -23,7 +23,7 @@ async function showHome(req, res) {
         playerDetails: playerDetails,
         teamOverallPosition: teamOverallPosition,
         nextMatchOpponent: nextMatchOpponent,
-        numberOfMatchesUntilNextForTeam: numberOfMatchesUntilNextForTeam
+        numberOfMatchesUntilNextForTeam: numberOfMatchesUntilNextForTeam,
     });
 }
 

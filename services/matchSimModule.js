@@ -43,8 +43,8 @@ async function showResultsOfMatchSim(req, res) {
 
     matchResultID = req.body.matchResultID;
 
-    console.log('Team 1 player stats: ', team1PlayerMatchStats);
-    console.log('Team 2 player stats: ', team2PlayerMatchStats);
+    //console.log('Team 1 player stats: ', team1PlayerMatchStats);
+    //console.log('Team 2 player stats: ', team2PlayerMatchStats);
 
     team1Score = await calculateTeamScore(team1PlayerMatchStats);
     team2Score = await calculateTeamScore(team2PlayerMatchStats);
