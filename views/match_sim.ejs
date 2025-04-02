@@ -18,15 +18,29 @@
     
     <div class="row justify-content-center">
         <div class="col-4 text-center">
-            <div>
+            <% if (isNextMatchIncludeChosenTeam) { %>
+                <div class="chosenTeamHighlight">
+            <% } else { %>
+                <div>
+            <% } %>
+                <img src="/images/<%= nextMatchDetails[0].team1_image_filename %>" width="200" height="200">
                 <p class="matchSimTeamName"><%= nextMatchDetails[0].team1_name %></p>
                 <p>Rating: <%= nextMatchDetails[0].team1_rating %></p>
+                <p>Record: <%= team1OverallPosition[0].wins %>-<%= team1OverallPosition[0].losses %></p>
+                <p>Position: <%= team1OverallPosition[0].pos %></p>
             </div>
         </div>
         <div class="col-4 text-center">
-            <div>
+            <% if (isNextMatchIncludeChosenTeam) { %>
+                <div class="chosenTeamHighlight">
+            <% } else { %>
+                <div>
+            <% } %>
+                <img src="/images/<%= nextMatchDetails[0].team2_image_filename %>" width="200" height="200">
                 <p class="matchSimTeamName"><%= nextMatchDetails[0].team2_name %></p>
                 <p>Rating: <%= nextMatchDetails[0].team2_rating %></p>
+                <p>Record: <%= team2OverallPosition[0].wins %>-<%= team2OverallPosition[0].losses %></p>
+                <p>Position: <%= team2OverallPosition[0].pos %></p>
             </div>
         </div>
 

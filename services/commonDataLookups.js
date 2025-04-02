@@ -12,7 +12,7 @@ module.exports.lookupSinglePlayerStats = lookupSinglePlayerStats;
 
 
 async function lookupTeamDetails(teamID) {
-    queryString = 'SELECT t.team_name, t.team_rating, c.conference_name ' +
+    queryString = 'SELECT t.team_name, t.team_rating, c.conference_name, t.image_filename ' +
     'FROM team t ' +
     'INNER JOIN conference c ON t.conference_id = c.id ' +
     'WHERE t.id = $1';
@@ -204,3 +204,4 @@ async function lookupSinglePlayerStats(playerID) {
         console.log(error)
     }
 }
+

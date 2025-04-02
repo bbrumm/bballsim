@@ -14,14 +14,21 @@ async function showMatchSim(req, res) {
     gameParameters = await commonDataLookups.lookupChosenTeamID();
     chosenTeamID = gameParameters[0].team_id_chosen;
 
+    
     //Show teams regardless of button being clicked
     let nextMatchDetails = await loadNextMatch();
     isNextMatchIncludeChosenTeam = await calculateIsNextMatchIncludeChosenTeam(chosenTeamID, nextMatchDetails);
 
+    team1OverallPosition = await commonDataLookups.lookupOverallRecordForTeam(nextMatchDetails[0].team1_id);
+    team2OverallPosition = await commonDataLookups.lookupOverallRecordForTeam(nextMatchDetails[0].team2_id);
+
+
     res.render('match_sim', {
         nextMatchDetails: nextMatchDetails,
         resultOfInsert: false,
-        isNextMatchIncludeChosenTeam: isNextMatchIncludeChosenTeam
+        isNextMatchIncludeChosenTeam: isNextMatchIncludeChosenTeam,
+        team1OverallPosition: team1OverallPosition,
+        team2OverallPosition: team2OverallPosition
     });
 }
 
@@ -86,9 +93,11 @@ const loadNextMatch = async () => {
         'mr.team1_id, ' +
         't1.team_name AS team1_name, ' +
         't1.team_rating AS team1_rating, ' +
+        't1.image_filename AS team1_image_filename, ' +
         'team2_id,' +
         't2.team_name AS team2_name, ' +
-        't2.team_rating AS team2_rating ' +
+        't2.team_rating AS team2_rating, ' +
+        't2.image_filename AS team2_image_filename ' +
         'FROM match_result mr ' +
         'INNER JOIN team t1 ON mr.team1_id = t1.id ' +
         'INNER JOIN team t2 ON mr.team2_id = t2.id ' +
