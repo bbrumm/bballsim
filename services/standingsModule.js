@@ -14,7 +14,7 @@ async function showStandings(req, res) {
     //console.log('Team List: ', teamListResults); 
     let teamList = teamListResults;
 
-    res.render('index', {
+    res.render('standings', {
         isOverall: true,
         teamList: teamList,
         chosenTeamID: chosenTeamID
@@ -28,7 +28,7 @@ async function showStandingsByConf(req, res) {
     gameParameters = await commonDataLookups.lookupChosenTeamID();
     chosenTeamID = gameParameters[0].team_id_chosen;
 
-    res.render('index', {
+    res.render('standings', {
         isOverall: false,
         standingsEast: standingsEast,
         standingsWest: standingsWest,

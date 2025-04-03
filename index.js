@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const port = 8000;
 
-const teamListModule = require(__dirname + "/services/teamListModule");
+const standingsModule = require(__dirname + "/services/standingsModule");
 const matchSimModule = require(__dirname + "/services/matchSimModule");
 const teamModule = require(__dirname + "/services/teamModule");
 const statsModule = require(__dirname + "/services/statsModule");
@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/standings/', (req, res) => {
-  teamListModule.showStandings(req, res);
+  standingsModule.showStandings(req, res);
 });
 
 app.get('/playoffs/', (req, res) => {
