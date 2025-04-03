@@ -1,6 +1,7 @@
 const commonDataLookups = require('./commonDataLookups.js');
 
 module.exports.showTrades = showTrades;
+module.exports.confirmTrade = confirmTrade;
 
 async function showTrades(req, res) {
     gameParameters = await commonDataLookups.lookupChosenTeamID();
@@ -17,3 +18,8 @@ async function showTrades(req, res) {
     });
 }
 
+async function confirmTrade(req, res) {
+    res.render('trade_submitted', {
+
+    });
+}

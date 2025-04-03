@@ -57,6 +57,10 @@ app.get('/trades/', (req, res) => {
   tradesModule.showTrades(req, res);
 });
 
+app.post('/trade_submitted/', (req, res) => {
+  tradesModule.confirmTrade(req, res);
+});
+
 app.get('/match_sim', (req, res) => {
     matchSimModule.showMatchSim(req, res);
 });

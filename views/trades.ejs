@@ -1,18 +1,9 @@
 <%- include('header') -%>
 
 <%- include('links') -%>
-<script>
-    function updateProposedTradeYourTeam(control) {
-        document.getElementById("yourPlayer").innerHTML = control.value;
-        //control.closest('tr').style.backgroundColor = 'red';
-    }
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="../scripts/tradeSelection.js"></script>
 
-    function updateProposedTradeChosenPlayer(control) {
-        document.getElementById("chosenPlayer").innerHTML = control.value;
-    }
-
-
-</script>
 <body class="bodyStyle">
     <h1>Trades</h1>
     <form class="" action="/trade_submitted" method="post" name="tradeSubmitted" id="tradeSubmitted">
@@ -22,13 +13,25 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-4">
+            <div class="col-4 text-left">
                 <p>Your Player:</p>
-                <p id="yourPlayer">none selected</p>
+                <div id="yourSelectedPlayerName">None Selected</div>
+                <div id="yourSelectedPlayerRating"></div>
+                <div id="yourSelectedPlayerSalary"></div>
             </div>
-            <div class="col-4">
+            <div class="col-4 text-left">
                 <p>Chosen Player:</p>
-                <p id="chosenPlayer">none selected</p>
+                <div id="chosenPlayerName">None Selected</div>
+                <div id="chosenPlayerRating"></div>
+                <div id="chosenPlayerSalary"></div>
+                <div id="chosenPlayerTeam"></div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <button type="submit" id="confirm_trade" name="confirm_trade" value="trade" class="btn btn-primary btn-block mainButton" disabled>
+                    Confirm Trade
+                </button>
             </div>
         </div>
 
@@ -50,14 +53,14 @@
                                         <input class="form-check-input"
                                         type="radio" 
                                         name="radioPlayerYourTeam" 
-                                        id="rdTrade<%= playerDetailsForTeam[i].id %>" 
+                                        id="radioPlayerYourTeam" 
                                         value="<%= playerDetailsForTeam[i].first_name %> <%= playerDetailsForTeam[i].last_name %>" 
                                         onclick="updateProposedTradeYourTeam(this)">
                                     </div>
                                 </td>
-                                <td><a href='/player/?playerID=<%= playerDetailsForTeam[i].id %>'><%= playerDetailsForTeam[i].first_name %> <%= playerDetailsForTeam[i].last_name %></a></td>
-                                <td><%= playerDetailsForTeam[i].rating_ovr %></td>
-                                <td><%= playerDetailsForTeam[i].annual_salary %></td>
+                                <td class="rowPlayerName"><a href='/player/?playerID=<%= playerDetailsForTeam[i].id %>'><%= playerDetailsForTeam[i].first_name %> <%= playerDetailsForTeam[i].last_name %></a></td>
+                                <td class="rowPlayerRating"><%= playerDetailsForTeam[i].rating_ovr %></td>
+                                <td class="rowPlayerSalary"><%= playerDetailsForTeam[i].annual_salary %></td>
                             </tr>
                         <% } %>
                     </tbody>
@@ -82,15 +85,15 @@
                                         <input class="form-check-input"
                                         type="radio" 
                                         name="radioPlayerOpen" 
-                                        id="rdOpen<%= playersOpenToTrade[i].id %>" 
+                                        id="radioPlayerOpen" 
                                         value="<%= playersOpenToTrade[i].first_name %> <%= playersOpenToTrade[i].last_name %>" 
                                         onclick="updateProposedTradeChosenPlayer(this)">
                                     </div>
                                 </td>
-                                <td><a href='/player/?playerID=<%= playersOpenToTrade[i].id %>'><%= playersOpenToTrade[i].first_name %> <%= playersOpenToTrade[i].last_name %></a></td>
-                                <td><%= playersOpenToTrade[i].rating_ovr %></td>
-                                <td><%= playersOpenToTrade[i].team_name %></td>
-                                <td><%= playersOpenToTrade[i].annual_salary %></td>
+                                <td class="rowOpenPlayerName"><a href='/player/?playerID=<%= playersOpenToTrade[i].id %>'><%= playersOpenToTrade[i].first_name %> <%= playersOpenToTrade[i].last_name %></a></td>
+                                <td class="rowOpenPlayerRating"><%= playersOpenToTrade[i].rating_ovr %></td>
+                                <td class="rowOpenPlayerTeam"><%= playersOpenToTrade[i].team_name %></td>
+                                <td class="rowOpenPlayerSalary"><%= playersOpenToTrade[i].annual_salary %></td>
                             </tr>
                         <% } %>
                     </tbody>
