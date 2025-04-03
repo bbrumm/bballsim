@@ -37,9 +37,9 @@ async function confirmTrade(req, res) {
         newTeamID: chosenTeamID
     };
 
-    console.log("Your Player: ", req.body.radioPlayerYourTeam);
-    console.log("Chosen Player: ", req.body.radioPlayerOpen);
-    console.log("Your Player Object: ", tradeYourPlayer);
+    //console.log("Your Player: ", req.body.radioPlayerYourTeam);
+    //console.log("Chosen Player: ", req.body.radioPlayerOpen);
+    //console.log("Your Player Object: ", tradeYourPlayer);
     res.render('trade_submitted', {
         tradeYourPlayer: tradeYourPlayer,
         tradeOtherPlayer: tradeOtherPlayer
