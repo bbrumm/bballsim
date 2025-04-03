@@ -48,11 +48,12 @@ const loadTeamList = async () => {
         'team_rating, ' +
         'wins, ' +
         'losses, ' +
+        'win_rate, ' +
         'points_for, ' +
         'points_against, ' +
         'conference_name ' +
         'FROM standings ' +
-        'ORDER BY wins DESC, losses ASC, points_for DESC, points_against ASC;';
+        'ORDER BY win_rate DESC, losses ASC, points_for DESC, points_against ASC;';
     try {
         const res = await client.query(queryString);
         return res.rows;

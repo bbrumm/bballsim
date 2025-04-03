@@ -123,7 +123,7 @@ async function lookupOverallRecordForTeam(teamID) {
     'points_against ' +
     'FROM standings ' +
     'WHERE id = $1 ' +
-    'ORDER BY wins DESC, losses ASC, points_for DESC, points_against ASC;';
+    'ORDER BY win_rate DESC, losses ASC, points_for DESC, points_against ASC;';
     try {
         const res = await client.query(queryString, [teamID]);
         return res.rows;
@@ -372,7 +372,7 @@ async function lookupStandings(conference_id) {
         "'(' || pos_conference || ') ' || team_name || ' (' || wins || '-' || losses || ')' AS playoff_team_label " +
         "FROM standings " +
         "WHERE conference_id = $1 " +
-        "ORDER BY wins DESC, losses ASC, points_for DESC, points_against ASC;";
+        "ORDER BY win_rate DESC, losses ASC, points_for DESC, points_against ASC;";
     try {
         const res = await client.query(queryString, [conference_id]);
         return res.rows;
