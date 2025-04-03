@@ -54,7 +54,7 @@
                                         type="radio" 
                                         name="radioPlayerYourTeam" 
                                         id="radioPlayerYourTeam" 
-                                        value="<%= playerDetailsForTeam[i].first_name %> <%= playerDetailsForTeam[i].last_name %>" 
+                                        value="<%= playerDetailsForTeam[i].id %>" 
                                         onclick="updateProposedTradeYourTeam(this)">
                                     </div>
                                 </td>
@@ -86,7 +86,7 @@
                                         type="radio" 
                                         name="radioPlayerOpen" 
                                         id="radioPlayerOpen" 
-                                        value="<%= playersOpenToTrade[i].first_name %> <%= playersOpenToTrade[i].last_name %>" 
+                                        value="<%= playersOpenToTrade[i].id %>" 
                                         onclick="updateProposedTradeChosenPlayer(this)">
                                     </div>
                                 </td>
@@ -100,6 +100,9 @@
                 </table>
             </div>
         </div>
+
+        <input type="hidden" name="yourPlayerID" id="yourPlayerID" value="" />
+        <input type="hidden" name="chosenPlayerID" id="chosenPlayerID" value="" />
     </form>
 </body>
 </html>

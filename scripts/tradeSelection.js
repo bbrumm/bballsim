@@ -10,6 +10,10 @@ function updateProposedTradeYourTeam(control) {
     document.getElementById("yourSelectedPlayerRating").innerHTML = yourPlayerRating;
     document.getElementById("yourSelectedPlayerSalary").innerHTML = yourPlayerSalary;
 
+    //Update the hidden form attribute, which is used for inserting data
+    document.getElementById("yourPlayerID").value = control.value;
+    console.log("Your ID: ", control.value);
+
     let chosenPlayerRating = document.getElementById("chosenPlayerRating").innerHTML;
     validateTrade(yourPlayerRating, chosenPlayerRating);
 }
@@ -24,6 +28,10 @@ function updateProposedTradeChosenPlayer(control) {
     document.getElementById("chosenPlayerRating").innerHTML = chosenPlayerRating;
     document.getElementById("chosenPlayerSalary").innerHTML = chosenPlayerSalary;
     document.getElementById("chosenPlayerTeam").innerHTML = chosenPlayerTeam;
+
+    //Update the hidden form attribute, which is used for inserting data
+    document.getElementById("chosenPlayerID").value = control.value;
+    console.log("Chosen ID: ", control.value);
 
     let yourPlayerRating = document.getElementById("yourSelectedPlayerRating").innerHTML;
     validateTrade(yourPlayerRating, chosenPlayerRating);
