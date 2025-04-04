@@ -1,6 +1,8 @@
 const db = require('./db.js');
 const client = db.client;
 
+
+
 module.exports.lookupTeamDetails = lookupTeamDetails;
 module.exports.lookupMatchResultsForTeam = lookupMatchResultsForTeam;
 module.exports.lookupPlayerDetailsForTeam = lookupPlayerDetailsForTeam;
@@ -29,10 +31,8 @@ module.exports.lookupBestPlayers = lookupBestPlayers;
 
 
 async function lookupTeamDetails(teamID) {
-    queryString = 'SELECT t.team_name, t.team_rating, c.conference_name, t.image_filename ' +
-    'FROM team t ' +
-    'INNER JOIN conference c ON t.conference_id = c.id ' +
-    'WHERE t.id = $1';
+    queryString = await openQueryFile("lookupTeamDetails");
+
     try {
         const res = await client.query(queryString, [teamID]);
         return res.rows;
@@ -41,7 +41,20 @@ async function lookupTeamDetails(teamID) {
     }
 }
 
-
+async function openQueryFile(filename) {
+    let fs = require('fs');
+    let queryFolder = './queries/';
+    let fullFilename = queryFolder + filename + '.sql';
+    //return queryFolder;
+    /*fs.readFile(queryFolder + filename + '.sql', function (err, data) {
+        if (err) throw err;
+        console.log("File data: ", data);
+        return data;
+      });
+      */
+     fileData = fs.readFileSync(fullFilename, 'utf8');
+     return fileData;
+}
 
 async function lookupMatchResultsForTeam(teamID) {
     queryString = 'SELECT ' +
