@@ -3,7 +3,7 @@ const commonDataLookups = require('./commonDataLookups.js');
 module.exports.showHome = showHome;
 
 async function showHome(req, res) {
-    gameParameters = await commonDataLookups.lookupChosenTeamID();
+    gameParameters = await commonDataLookups.lookupGameParameters();
     chosenTeamID = gameParameters[0].team_id_chosen;
 
     teamDetails = await commonDataLookups.lookupTeamDetails(chosenTeamID);

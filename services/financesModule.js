@@ -3,7 +3,7 @@ const commonDataLookups = require('./commonDataLookups.js');
 module.exports.showFinances = showFinances;
 
 async function showFinances(req, res) {
-    gameParameters = await commonDataLookups.lookupChosenTeamID();
+    gameParameters = await commonDataLookups.lookupGameParameters();
     chosenTeamID = gameParameters[0].team_id_chosen;
 
     teamFinancesResult = await commonDataLookups.lookupTeamFinances();

@@ -11,7 +11,7 @@ async function showMatchSim(req, res) {
 
     console.log('Request Body for Show: ', req.body);
 
-    gameParameters = await commonDataLookups.lookupChosenTeamID();
+    gameParameters = await commonDataLookups.lookupGameParameters();
     chosenTeamID = gameParameters[0].team_id_chosen;
     
     //Show teams regardless of button being clicked

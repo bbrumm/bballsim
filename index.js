@@ -15,6 +15,7 @@ const matchHistoryModule = require(__dirname + "/services/matchHistoryModule");
 const playoffsModule = require(__dirname + "/services/playoffsModule");
 const financesModule = require(__dirname + "/services/financesModule");
 const tradesModule = require(__dirname + "/services/tradesModule");
+const tradeHistoryModule = require(__dirname + "/services/tradeHistoryModule");
 
 app.set('view engine', 'ejs');
 
@@ -39,6 +40,10 @@ app.get('/standings/', (req, res) => {
 
 app.get('/playoffs/', (req, res) => {
   playoffsModule.showPlayoffs(req, res);
+});
+
+app.get('/trade_history/', (req, res) => {
+  tradeHistoryModule.showTradeHistory(req, res);
 });
 
 app.get('/standings_conf/', (req, res) => {

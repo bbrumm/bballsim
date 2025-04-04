@@ -9,7 +9,7 @@ async function showPlayoffs(req, res) {
     standingsEast = await commonDataLookups.lookupStandings(1);
     standingsWest = await commonDataLookups.lookupStandings(2);
 
-    gameParameters = await commonDataLookups.lookupChosenTeamID();
+    gameParameters = await commonDataLookups.lookupGameParameters();
     chosenTeamID = gameParameters[0].team_id_chosen;
 
     res.render('playoffs', {

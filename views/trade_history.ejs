@@ -1,0 +1,36 @@
+<%- include('header') -%>
+
+<%- include('links') -%>
+<body class="bodyStyle">
+    <h1>Trade History</h1>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <table class="dataTable">
+                    <thead>
+                        <th>ID</th>
+                        <th>Date Traded</th>
+                        <th>Player Name</th>
+                        <th>Player Rating</th>
+                        <th>From Team</th>
+                        <th>To Team</th>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i < tradeHistoryResults.length; i++) { %>
+                            <tr>
+                                <td><%= tradeHistoryResults[i].id %></td>
+                                <td><%= tradeHistoryResults[i].create_datetime %></td>
+                                <td><a href='/player/?playerID=<%= tradeHistoryResults[i].player_id %>'><%= tradeHistoryResults[i].first_name %> <%= tradeHistoryResults[i].last_name %></a></td>
+                                <td><%= tradeHistoryResults[i].rating_ovr %></td>
+                                <td><a href='/team/?teamID=<%= tradeHistoryResults[i].old_team_id %>'><%= tradeHistoryResults[i].old_team_name %></a></td>
+                                <td><a href='/team/?teamID=<%= tradeHistoryResults[i].new_team_id %>'><%= tradeHistoryResults[i].new_team_name %></a></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

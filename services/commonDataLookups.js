@@ -4,7 +4,6 @@ const client = db.client;
 module.exports.lookupTeamDetails = lookupTeamDetails;
 module.exports.lookupMatchResultsForTeam = lookupMatchResultsForTeam;
 module.exports.lookupPlayerDetailsForTeam = lookupPlayerDetailsForTeam;
-module.exports.lookupChosenTeamID = lookupChosenTeamID;
 module.exports.lookupOverallRecordForTeam = lookupOverallRecordForTeam;
 module.exports.lookupNextMatchForTeam = lookupNextMatchForTeam;
 module.exports.lookupPlayerStatsPoints = lookupPlayerStatsPoints;
@@ -16,7 +15,7 @@ module.exports.lookupSinglePlayerStats = lookupSinglePlayerStats;
 module.exports.getMatchHistory = getMatchHistory;
 module.exports.lookupStandings = lookupStandings;
 module.exports.lookupNextMatch = lookupNextMatch;
-module.exports.lookupTeamFinances = lookupTeamFinances;
+module.exports.lookupGameParameters = lookupGameParameters;
 module.exports.lookupTotalTeamSalary = lookupTotalTeamSalary;
 module.exports.lookupNumberOfRemainingMatchesForTeam = lookupNumberOfRemainingMatchesForTeam;
 module.exports.lookupOpenToTradePlayers = lookupOpenToTradePlayers;
@@ -24,8 +23,7 @@ module.exports.storeCompletedTrade = storeCompletedTrade;
 module.exports.updateTeamForPlayer = updateTeamForPlayer;
 module.exports.recalculateTeamOverallRating = recalculateTeamOverallRating;
 module.exports.updateTeamBankBalanceAfterMatch = updateTeamBankBalanceAfterMatch;
-
-
+module.exports.lookupTradeHistory = lookupTradeHistory;
 
 
 
@@ -107,15 +105,7 @@ async function lookupPlayerDetailsForTeam(teamID) {
     }
 }
 
-async function lookupChosenTeamID() {
-    queryString = 'SELECT team_id_chosen FROM game_parameters;';
-    try {
-        const res = await client.query(queryString);
-        return res.rows;
-    } catch (error) {
-        console.log(error)
-    }
-}
+
 
 async function lookupOverallRecordForTeam(teamID) {
     queryString = queryString = 'SELECT ' +
@@ -415,8 +405,8 @@ async function lookupNextMatch() {
 }
 
 
-async function lookupTeamFinances() {
-    queryString = 'SELECT team_bank_balance, income_per_game ' +
+async function lookupGameParameters() {
+    queryString = 'SELECT team_id_chosen, team_bank_balance, income_per_game ' +
         'FROM game_parameters;';
     try {
         const res = await client.query(queryString);
@@ -536,6 +526,31 @@ async function recalculateTeamOverallRating(teamID) {
 async function updateTeamBankBalanceAfterMatch() {
     queryString = 'UPDATE game_parameters ' +
         'SET team_bank_balance = team_bank_balance + income_per_game;';
+    try {
+        const res = await client.query(queryString);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function lookupTradeHistory() {
+    queryString = 'SELECT ' +
+        'c.id, ' +
+        'c.create_datetime, ' +
+        'c.player_id, ' +
+        'p.first_name, ' +
+        'p.last_name, ' +
+        'c.old_team_id, ' +
+        'ot.team_name AS old_team_name, ' +
+        'c.new_team_id, ' +
+        'nt.team_name AS new_team_name, ' +
+        'p.rating_ovr ' +
+        'FROM complete_trade c ' +
+        'INNER JOIN team ot ON c.old_team_id = ot.id ' +
+        'INNER JOIN team nt ON c.new_team_id = nt.id ' +
+        'INNER JOIN player p ON c.player_id = p.id ' +
+        'ORDER BY id DESC;'
     try {
         const res = await client.query(queryString);
         return res.rows;

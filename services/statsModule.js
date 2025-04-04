@@ -12,7 +12,7 @@ async function showStats(req, res) {
     playerStatsAssists = await commonDataLookups.lookupPlayerStatsAssists();
     playerStatsSteals = await commonDataLookups.lookupPlayerStatsSteals();
     playerStatsBlocks = await commonDataLookups.lookupPlayerStatsBlocks();
-    gameParameters = await commonDataLookups.lookupChosenTeamID();
+    gameParameters = await commonDataLookups.lookupGameParameters();
     chosenTeamID = gameParameters[0].team_id_chosen;
 
     //console.log('playerStats: ', playerStats);

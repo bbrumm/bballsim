@@ -8,7 +8,7 @@ module.exports.showStandingsByConf = showStandingsByConf;
 async function showStandings(req, res) {
     teamListResults = await loadTeamList();
 
-    gameParameters = await commonDataLookups.lookupChosenTeamID();
+    gameParameters = await commonDataLookups.lookupGameParameters();
     chosenTeamID = gameParameters[0].team_id_chosen;
 
     //console.log('Team List: ', teamListResults); 
@@ -25,7 +25,7 @@ async function showStandingsByConf(req, res) {
     standingsEast = await commonDataLookups.lookupStandings(1);
     standingsWest = await commonDataLookups.lookupStandings(2);
 
-    gameParameters = await commonDataLookups.lookupChosenTeamID();
+    gameParameters = await commonDataLookups.lookupGameParameters();
     chosenTeamID = gameParameters[0].team_id_chosen;
 
     res.render('standings', {

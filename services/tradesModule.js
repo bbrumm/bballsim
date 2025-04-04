@@ -4,7 +4,7 @@ module.exports.showTrades = showTrades;
 module.exports.confirmTrade = confirmTrade;
 
 async function showTrades(req, res) {
-    gameParameters = await commonDataLookups.lookupChosenTeamID();
+    gameParameters = await commonDataLookups.lookupGameParameters();
     chosenTeamID = gameParameters[0].team_id_chosen;
 
     playerDetailsForTeam = await commonDataLookups.lookupPlayerDetailsForTeam(chosenTeamID);
@@ -19,7 +19,7 @@ async function showTrades(req, res) {
 }
 
 async function confirmTrade(req, res) {
-    gameParameters = await commonDataLookups.lookupChosenTeamID();
+    gameParameters = await commonDataLookups.lookupGameParameters();
     chosenTeamID = gameParameters[0].team_id_chosen;
 
     otherPlayer = await commonDataLookups.lookupSinglePlayerStats(req.body.radioPlayerOpen);
