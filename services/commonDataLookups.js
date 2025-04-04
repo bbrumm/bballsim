@@ -22,6 +22,7 @@ module.exports.lookupNumberOfRemainingMatchesForTeam = lookupNumberOfRemainingMa
 module.exports.lookupOpenToTradePlayers = lookupOpenToTradePlayers;
 module.exports.storeCompletedTrade = storeCompletedTrade;
 module.exports.updateTeamForPlayer = updateTeamForPlayer;
+module.exports.recalculateTeamOverallRating = recalculateTeamOverallRating;
 
 
 
@@ -493,6 +494,39 @@ async function updateTeamForPlayer(tradedPlayer) {
                 tradedPlayer.newTeamID,
                 tradedPlayer.playerID
             ]);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function recalculateTeamOverallRating(teamID) {
+    queryString = 'UPDATE team AS mt ' +
+        'SET team_rating = r.new_team_rating ' +
+        'FROM ( ' +
+            'SELECT ' +
+            'team_id, ' +
+            'ROUND(AVG(rating_ovr), 0) AS new_team_rating ' +
+            'FROM ( ' +
+                'SELECT ' +
+                't.id AS team_id, ' +
+                'p.id AS player_id, ' +
+                'p.rating_ovr, ' +
+                'ROW_NUMBER() OVER ( ' +
+                    'PARTITION BY t.id ' +
+                    'ORDER BY p.rating_ovr DESC ' +
+                ') AS player_order ' +
+                'FROM player p ' +
+                'INNER JOIN team t ON p.team_id = t.id ' +
+                'ORDER BY t.id ASC, p.rating_ovr DESC ' +
+            ') s ' +
+            'WHERE s.player_order <= 8 ' +
+            'GROUP BY team_id ' +
+        ') AS r ' +
+        'WHERE mt.id = r.team_id AND mt.id = $1;';
+    try {
+        const res = await client.query(
+            queryString, [teamID]);
         return res.rows;
     } catch (error) {
         console.log(error)

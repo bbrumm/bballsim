@@ -42,7 +42,7 @@ app.get('/playoffs/', (req, res) => {
 });
 
 app.get('/standings_conf/', (req, res) => {
-  teamListModule.showStandingsByConf(req, res);
+  standingsModule.showStandingsByConf(req, res);
 });
 
 app.get('/home/', (req, res) => {

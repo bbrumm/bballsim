@@ -46,7 +46,8 @@ async function confirmTrade(req, res) {
     await commonDataLookups.updateTeamForPlayer(tradeOtherPlayer);
 
     //Recalculate the team OVR
-
+    await commonDataLookups.recalculateTeamOverallRating(tradeYourPlayer.newTeamID);
+    await commonDataLookups.recalculateTeamOverallRating(tradeOtherPlayer.newTeamID);
 
     //console.log("Your Player: ", req.body.radioPlayerYourTeam);
     //console.log("Chosen Player: ", req.body.radioPlayerOpen);
