@@ -23,6 +23,7 @@ module.exports.lookupOpenToTradePlayers = lookupOpenToTradePlayers;
 module.exports.storeCompletedTrade = storeCompletedTrade;
 module.exports.updateTeamForPlayer = updateTeamForPlayer;
 module.exports.recalculateTeamOverallRating = recalculateTeamOverallRating;
+module.exports.updateTeamBankBalanceAfterMatch = updateTeamBankBalanceAfterMatch;
 
 
 
@@ -525,8 +526,18 @@ async function recalculateTeamOverallRating(teamID) {
         ') AS r ' +
         'WHERE mt.id = r.team_id AND mt.id = $1;';
     try {
-        const res = await client.query(
-            queryString, [teamID]);
+        const res = await client.query(queryString, [teamID]);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function updateTeamBankBalanceAfterMatch() {
+    queryString = 'UPDATE game_parameters ' +
+        'SET team_bank_balance = team_bank_balance + income_per_game;';
+    try {
+        const res = await client.query(queryString);
         return res.rows;
     } catch (error) {
         console.log(error)

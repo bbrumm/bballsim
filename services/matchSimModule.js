@@ -13,7 +13,6 @@ async function showMatchSim(req, res) {
 
     gameParameters = await commonDataLookups.lookupChosenTeamID();
     chosenTeamID = gameParameters[0].team_id_chosen;
-
     
     //Show teams regardless of button being clicked
     let nextMatchDetails = await commonDataLookups.lookupNextMatch();
@@ -68,6 +67,11 @@ async function showResultsOfMatchSim(req, res) {
     //Store the result of the match
     resultOfInsert = await storeMatchSimResult(matchResultID, winningTeamID, losingTeamID, winningTeamScore, losingTeamScore, team1PlayerMatchStats, team2PlayerMatchStats);
     console.log('Match result inserted, response is ', resultOfInsert);
+
+    //Update team bank balance if the match was for the current team
+    if(chosenTeamID == winningTeamID || chosenTeamID == losingTeamID) {
+        await commonDataLookups.updateTeamBankBalanceAfterMatch();
+    }
 
     let nextMatchDetails = await commonDataLookups.lookupNextMatch();
     isNextMatchIncludeChosenTeam = await calculateIsNextMatchIncludeChosenTeam(chosenTeamID, nextMatchDetails);

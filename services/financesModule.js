@@ -25,7 +25,9 @@ async function showFinances(req, res) {
             teamNumberOfRemainingMatches[0].match_count * teamFinancesResult[0].income_per_game
         ),
         projectedEndOfYearBalance: new Intl.NumberFormat().format(
-            teamFinancesResult[0].team_bank_balance - (teamNumberOfRemainingMatches[0].match_count * teamFinancesResult[0].income_per_game)
+            teamFinancesResult[0].team_bank_balance + 
+            (teamNumberOfRemainingMatches[0].match_count * teamFinancesResult[0].income_per_game) - 
+            teamTotalSalaryResult[0].total_salary
         )
     }
 
