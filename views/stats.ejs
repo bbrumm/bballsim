@@ -11,6 +11,7 @@
                     <thead>
                         <th>Pos.</th>
                         <th>Player Name</th>
+                        <th>Pos.</th>
                         <th>Rating</th>
                         <th>Team</th>
                         <th>Games Played</th>
@@ -26,6 +27,7 @@
                             <% } %>
                                 <td><%= i + 1 %></td>
                                 <td><a href='/player/?playerID=<%= playerStatsPoints[i].id %>' class="link-primary"><%= playerStatsPoints[i].first_name %> <%= playerStatsPoints[i].last_name %></a></td>
+                                <td><%= playerStatsPoints[i].short_name %></td>
                                 <td><%= playerStatsPoints[i].rating_ovr %></td>
                                 <td><a href='/team/?teamID=<%= playerStatsPoints[i].team_id %>'><%= playerStatsPoints[i].team_name %></a></td>
                                 <td><%= playerStatsPoints[i].games_played %></td>
@@ -47,6 +49,7 @@
                     <thead>
                         <th>Pos.</th>
                         <th>Player Name</th>
+                        <th>Pos.</th>
                         <th>Rating</th>
                         <th>Team</th>
                         <th>Games Played</th>
@@ -62,6 +65,7 @@
                             <% } %>
                                 <td><%= i + 1 %></td>
                                 <td><a href='/player/?playerID=<%= playerStatsRebounds[i].id %>' class="link-primary"><%= playerStatsRebounds[i].first_name %> <%= playerStatsRebounds[i].last_name %></a></td>
+                                <td><%= playerStatsRebounds[i].short_name %></td>
                                 <td><%= playerStatsRebounds[i].rating_ovr %></td>
                                 <td><a href='/team/?teamID=<%= playerStatsRebounds[i].team_id %>'><%= playerStatsRebounds[i].team_name %></a></td>
                                 <td><%= playerStatsRebounds[i].games_played %></td>
@@ -83,6 +87,7 @@
                     <thead>
                         <th>Pos.</th>
                         <th>Player Name</th>
+                        <th>Pos.</th>
                         <th>Rating</th>
                         <th>Team</th>
                         <th>Games Played</th>
@@ -98,6 +103,7 @@
                             <% } %>
                                 <td><%= i + 1 %></td>
                                 <td><a href='/player/?playerID=<%= playerStatsAssists[i].id %>' class="link-primary"><%= playerStatsAssists[i].first_name %> <%= playerStatsAssists[i].last_name %></a></td>
+                                <td><%= playerStatsAssists[i].short_name %></td>
                                 <td><%= playerStatsAssists[i].rating_ovr %></td>
                                 <td><a href='/team/?teamID=<%= playerStatsAssists[i].team_id %>'><%= playerStatsAssists[i].team_name %></a></td>
                                 <td><%= playerStatsAssists[i].games_played %></td>
@@ -119,6 +125,7 @@
                     <thead>
                         <th>Pos.</th>
                         <th>Player Name</th>
+                        <th>Pos.</th>
                         <th>Rating</th>
                         <th>Team</th>
                         <th>Games Played</th>
@@ -134,6 +141,7 @@
                             <% } %>
                                 <td><%= i + 1 %></td>
                                 <td><a href='/player/?playerID=<%= playerStatsSteals[i].id %>' class="link-primary"><%= playerStatsSteals[i].first_name %> <%= playerStatsSteals[i].last_name %></a></td>
+                                <td><%= playerStatsSteals[i].short_name %></td>
                                 <td><%= playerStatsSteals[i].rating_ovr %></td>
                                 <td><a href='/team/?teamID=<%= playerStatsSteals[i].team_id %>'><%= playerStatsSteals[i].team_name %></a></td>
                                 <td><%= playerStatsSteals[i].games_played %></td>
@@ -155,6 +163,7 @@
                     <thead>
                         <th>Pos.</th>
                         <th>Player Name</th>
+                        <th>Pos.</th>
                         <th>Rating</th>
                         <th>Team</th>
                         <th>Games Played</th>
@@ -170,6 +179,7 @@
                             <% } %>
                                 <td><%= i + 1 %></td>
                                 <td><a href='/player/?playerID=<%= playerStatsBlocks[i].id %>' class="link-primary"><%= playerStatsBlocks[i].first_name %> <%= playerStatsBlocks[i].last_name %></a></td>
+                                <td><%= playerStatsBlocks[i].short_name %></td>
                                 <td><%= playerStatsBlocks[i].rating_ovr %></td>
                                 <td><a href='/team/?teamID=<%= playerStatsBlocks[i].team_id %>'><%= playerStatsBlocks[i].team_name %></a></td>
                                 <td><%= playerStatsBlocks[i].games_played %></td>

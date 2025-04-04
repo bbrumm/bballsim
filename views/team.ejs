@@ -53,6 +53,7 @@
                     <thead>
                         <th>ID</th>
                         <th>Name</th>
+                        <th>Pos.</th>
                         <th>Rating (OVR)</th>
                         <th>Points</th>
                         <th>Rebounds</th>
@@ -65,6 +66,7 @@
                             <tr>
                                 <td><%= playerDetails[i].id %></a></td>
                                 <td><a href='/player/?playerID=<%= playerDetails[i].id %>'><%= playerDetails[i].first_name %> <%= playerDetails[i].last_name %></a></td>
+                                <td><%= playerDetails[i].short_name %></td>
                                 <td><%= playerDetails[i].rating_ovr %></td>
                                 <td><%= playerDetails[i].points_scored %></td>
                                 <td><%= playerDetails[i].rebounds %></td>
