@@ -5,6 +5,7 @@ module.exports.showHome = showHome;
 async function showHome(req, res) {
     gameParameters = await commonDataLookups.lookupGameParameters();
     chosenTeamID = gameParameters[0].team_id_chosen;
+    playoffMode = gameParameters[0].playoff_mode;
 
     teamDetails = await commonDataLookups.lookupTeamDetails(chosenTeamID);
     teamMatchResults = await commonDataLookups.lookupMatchResultsForTeam(chosenTeamID);
@@ -24,6 +25,7 @@ async function showHome(req, res) {
         teamOverallPosition: teamOverallPosition,
         nextMatchOpponent: nextMatchOpponent,
         numberOfMatchesUntilNextForTeam: numberOfMatchesUntilNextForTeam,
+        playoffMode: playoffMode
     });
 }
 

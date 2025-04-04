@@ -405,7 +405,7 @@ async function lookupStandings(conference_id) {
     }
 }
 
-async function lookupNextMatch() {
+async function lookupNextMatch(playoffMode) {
     queryString = 'SELECT ' +
         'mr.id AS match_result_id, ' +
         'mr.team1_id, ' +
@@ -419,13 +419,15 @@ async function lookupNextMatch() {
         'FROM match_result mr ' +
         'INNER JOIN team t1 ON mr.team1_id = t1.id ' +
         'INNER JOIN team t2 ON mr.team2_id = t2.id ' +
-        '    WHERE mr.id = ( ' +
+        'WHERE mr.id = ( ' +
         '    SELECT MIN(id) ' +
         '    FROM match_result ' +
         '    WHERE winning_team_id IS NULL ' +
+        '    AND match_type_id = CASE WHEN $1 = 0 THEN 1 ELSE 2 END ' +
         ');';
+    console.log("Next Match Query: ", queryString);
     try {
-        const res = await client.query(queryString);
+        const res = await client.query(queryString, [playoffMode]);
         return res.rows;
     } catch (error) {
         console.log(error)
@@ -434,7 +436,7 @@ async function lookupNextMatch() {
 
 
 async function lookupGameParameters() {
-    queryString = 'SELECT team_id_chosen, team_bank_balance, income_per_game ' +
+    queryString = 'SELECT team_id_chosen, team_bank_balance, income_per_game, playoff_mode ' +
         'FROM game_parameters;';
     try {
         const res = await client.query(queryString);

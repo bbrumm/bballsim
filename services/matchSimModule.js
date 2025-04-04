@@ -13,9 +13,10 @@ async function showMatchSim(req, res) {
 
     gameParameters = await commonDataLookups.lookupGameParameters();
     chosenTeamID = gameParameters[0].team_id_chosen;
+    playoffMode = gameParameters[0].playoff_mode;
     
     //Show teams regardless of button being clicked
-    let nextMatchDetails = await commonDataLookups.lookupNextMatch();
+    let nextMatchDetails = await commonDataLookups.lookupNextMatch(playoffMode);
     isNextMatchIncludeChosenTeam = await calculateIsNextMatchIncludeChosenTeam(chosenTeamID, nextMatchDetails);
 
     team1OverallPosition = await commonDataLookups.lookupOverallRecordForTeam(nextMatchDetails[0].team1_id);
@@ -27,7 +28,8 @@ async function showMatchSim(req, res) {
         resultOfInsert: false,
         isNextMatchIncludeChosenTeam: isNextMatchIncludeChosenTeam,
         team1OverallPosition: team1OverallPosition,
-        team2OverallPosition: team2OverallPosition
+        team2OverallPosition: team2OverallPosition,
+        playoffMode: playoffMode
     });
 }
 
@@ -35,6 +37,8 @@ async function showResultsOfMatchSim(req, res) {
     //This is shown if a match simulation was just completed
 
     console.log('Request Body after Submit: ', req.body);
+    gameParameters = await commonDataLookups.lookupGameParameters();
+    playoffMode = gameParameters[0].playoff_mode;
 
     //Calculate player scores
     team1PlayerMatchStats = await calculatePlayerMatchStats(req.body.team1ID);
@@ -73,7 +77,7 @@ async function showResultsOfMatchSim(req, res) {
         await commonDataLookups.updateTeamBankBalanceAfterMatch();
     }
 
-    let nextMatchDetails = await commonDataLookups.lookupNextMatch();
+    let nextMatchDetails = await commonDataLookups.lookupNextMatch(playoffMode);
     isNextMatchIncludeChosenTeam = await calculateIsNextMatchIncludeChosenTeam(chosenTeamID, nextMatchDetails);
 
     team1OverallPosition = await commonDataLookups.lookupOverallRecordForTeam(nextMatchDetails[0].team1_id);
@@ -91,7 +95,8 @@ async function showResultsOfMatchSim(req, res) {
         losingTeamName: losingTeamName,
         isNextMatchIncludeChosenTeam: isNextMatchIncludeChosenTeam,
         team1OverallPosition: team1OverallPosition,
-        team2OverallPosition: team2OverallPosition
+        team2OverallPosition: team2OverallPosition,
+        playoffMode: playoffMode
     });
 
 }

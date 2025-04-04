@@ -15,6 +15,7 @@
                 <p>Record: <%= teamOverallPosition[0].wins %>-<%= teamOverallPosition[0].losses %></p>
                 <p>Position: <%= teamOverallPosition[0].pos %></p>
                 <p>Next Match: vs <a href='/team/?teamID=<%= nextMatchOpponent.team_id %>'><%= nextMatchOpponent.team_name %></a> (in <%= numberOfMatchesUntilNextForTeam %> matches)</p>
+                <p>Playoff Mode: <%= playoffMode %></p>
             </div>
         </div>
         <div class="row justify-content-center">

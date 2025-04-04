@@ -6,6 +6,15 @@
 
 <body class="bodyStyle">
     <h1>Trades</h1>
+
+    <% if (playoffMode == 1) { %>
+        <div class="row justify-content-center">
+            <div class="col-4 text-center">
+                <p>Playoffs have started. Trades are not available.</p>
+            </div>
+        </div>
+    <% } else { %>
+
     <form class="" action="/trade_submitted" method="post" name="tradeSubmitted" id="tradeSubmitted">
         <div class="row justify-content-center">
             <div class="col-8">
@@ -116,5 +125,7 @@
         <input type="hidden" name="yourPlayerID" id="yourPlayerID" value="" />
         <input type="hidden" name="chosenPlayerID" id="chosenPlayerID" value="" />
     </form>
+
+    <% } %>
 </body>
 </html>
