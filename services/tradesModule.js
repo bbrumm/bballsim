@@ -6,6 +6,7 @@ module.exports.confirmTrade = confirmTrade;
 async function showTrades(req, res) {
     gameParameters = await commonDataLookups.lookupGameParameters();
     chosenTeamID = gameParameters[0].team_id_chosen;
+    teamBankBalance = gameParameters[0].team_bank_balance;
 
     playerDetailsForTeam = await commonDataLookups.lookupPlayerDetailsForTeam(chosenTeamID);
     //console.log('playerDetailsForTeam: ', playerDetailsForTeam);
@@ -14,7 +15,8 @@ async function showTrades(req, res) {
     
     res.render('trades', {
         playerDetailsForTeam: playerDetailsForTeam,
-        playersOpenToTrade: playersOpenToTrade
+        playersOpenToTrade: playersOpenToTrade,
+        teamBankBalance: teamBankBalance
     });
 }
 
