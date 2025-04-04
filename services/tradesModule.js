@@ -42,6 +42,8 @@ async function confirmTrade(req, res) {
     await commonDataLookups.storeCompletedTrade(tradeOtherPlayer);
 
     //Update the team_id for both teams involved in the trade
+    await commonDataLookups.updateTeamForPlayer(tradeYourPlayer);
+    await commonDataLookups.updateTeamForPlayer(tradeOtherPlayer);
 
     //Recalculate the team OVR
 

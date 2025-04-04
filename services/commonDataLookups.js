@@ -21,6 +21,7 @@ module.exports.lookupTotalTeamSalary = lookupTotalTeamSalary;
 module.exports.lookupNumberOfRemainingMatchesForTeam = lookupNumberOfRemainingMatchesForTeam;
 module.exports.lookupOpenToTradePlayers = lookupOpenToTradePlayers;
 module.exports.storeCompletedTrade = storeCompletedTrade;
+module.exports.updateTeamForPlayer = updateTeamForPlayer;
 
 
 
@@ -477,6 +478,20 @@ async function storeCompletedTrade(tradedPlayer) {
                 tradedPlayer.playerID,
                 tradedPlayer.oldTeamID,
                 tradedPlayer.newTeamID
+            ]);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function updateTeamForPlayer(tradedPlayer) {
+    queryString = 'UPDATE player SET team_id = $1 WHERE id = $2;';
+    try {
+        const res = await client.query(
+            queryString, [
+                tradedPlayer.newTeamID,
+                tradedPlayer.playerID
             ]);
         return res.rows;
     } catch (error) {
