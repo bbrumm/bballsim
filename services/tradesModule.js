@@ -25,16 +25,24 @@ async function confirmTrade(req, res) {
     otherPlayer = await commonDataLookups.lookupSinglePlayerStats(req.body.radioPlayerOpen);
     otherPlayerTeamID = otherPlayer[0].team_id;
 
+    yourPlayer = await commonDataLookups.lookupSinglePlayerStats(req.body.radioPlayerYourTeam);
+
     let tradeYourPlayer = {
         playerID: req.body.radioPlayerYourTeam,
         oldTeamID: chosenTeamID,
-        newTeamID: otherPlayerTeamID
+        newTeamID: otherPlayerTeamID,
+        playerName: yourPlayer[0].first_name + ' ' + yourPlayer[0].last_name,
+        teamName: yourPlayer[0].team_name,
+        ratingOvr: yourPlayer[0].rating_ovr
     };
 
     let tradeOtherPlayer = {
         playerID: req.body.radioPlayerOpen,
         oldTeamID: otherPlayerTeamID,
-        newTeamID: chosenTeamID
+        newTeamID: chosenTeamID,
+        playerName: otherPlayer[0].first_name + ' ' + otherPlayer[0].last_name,
+        teamName: otherPlayer[0].team_name,
+        ratingOvr: otherPlayer[0].rating_ovr
     };
 
     //Insert two rows into the complete_trade table

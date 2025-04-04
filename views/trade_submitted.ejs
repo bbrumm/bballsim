@@ -7,11 +7,15 @@
         <div class="row justify-content-center">
             <div class="col-4">
                 <p>You Receive:</p>
-                <p>Player ID <%= tradeOtherPlayer.playerID %></p>
+                <p>Player ID: <%= tradeOtherPlayer.playerID %></p>
+                <p>Name: <%= tradeOtherPlayer.playerName %></p>
+                <p>Rating: <%= tradeOtherPlayer.ratingOvr %></p>
             </div>
             <div class="col-4">
-                <p>They Receive:</p>
+                <p><%= tradeYourPlayer.teamName %> Receive:</p>
                 <p>Player ID <%= tradeYourPlayer.playerID %></p>
+                <p>Name: <%= tradeYourPlayer.playerName %></p>
+                <p>Rating: <%= tradeYourPlayer.ratingOvr %></p>
             </div>
         </div>
         
