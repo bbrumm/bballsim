@@ -37,6 +37,15 @@ async function confirmTrade(req, res) {
         newTeamID: chosenTeamID
     };
 
+    //Insert two rows into the complete_trade table
+    await commonDataLookups.storeCompletedTrade(tradeYourPlayer);
+    await commonDataLookups.storeCompletedTrade(tradeOtherPlayer);
+
+    //Update the team_id for both teams involved in the trade
+
+    //Recalculate the team OVR
+
+
     //console.log("Your Player: ", req.body.radioPlayerYourTeam);
     //console.log("Chosen Player: ", req.body.radioPlayerOpen);
     //console.log("Your Player Object: ", tradeYourPlayer);

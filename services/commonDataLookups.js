@@ -20,6 +20,9 @@ module.exports.lookupTeamFinances = lookupTeamFinances;
 module.exports.lookupTotalTeamSalary = lookupTotalTeamSalary;
 module.exports.lookupNumberOfRemainingMatchesForTeam = lookupNumberOfRemainingMatchesForTeam;
 module.exports.lookupOpenToTradePlayers = lookupOpenToTradePlayers;
+module.exports.storeCompletedTrade = storeCompletedTrade;
+
+
 
 
 
@@ -459,6 +462,22 @@ async function lookupOpenToTradePlayers(teamID) {
         'AND t.id != $1;';
     try {
         const res = await client.query(queryString, [teamID]);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function storeCompletedTrade(tradedPlayer) {
+    queryString = 'INSERT INTO complete_trade (create_datetime, player_id, old_team_id, new_team_id) ' +
+        'VALUES (CURRENT_TIMESTAMP, $1, $2, $3);';
+    try {
+        const res = await client.query(
+            queryString, [
+                tradedPlayer.playerID,
+                tradedPlayer.oldTeamID,
+                tradedPlayer.newTeamID
+            ]);
         return res.rows;
     } catch (error) {
         console.log(error)
