@@ -50,6 +50,7 @@
                     <thead>
                         <th></th>
                         <th>Player Name</th>
+                        <th>Pos.</th>
                         <th>Overall Rating</th>
                         <th>Salary</th>
                     </thead>
@@ -67,6 +68,7 @@
                                     </div>
                                 </td>
                                 <td class="rowPlayerName"><a href='/player/?playerID=<%= playerDetailsForTeam[i].id %>'><%= playerDetailsForTeam[i].first_name %> <%= playerDetailsForTeam[i].last_name %></a></td>
+                                <td class="rowPlayerShortName"><%= playerDetailsForTeam[i].short_name %></td>
                                 <td class="rowPlayerRating"><%= playerDetailsForTeam[i].rating_ovr %></td>
                                 <td class="rowPlayerSalary"><%= playerDetailsForTeam[i].annual_salary %></td>
                             </tr>
@@ -81,6 +83,7 @@
                     <thead>
                         <th></th>
                         <th>Player Name</th>
+                        <th>Pos.</th>
                         <th>Overall Rating</th>
                         <th>Team Name</th>
                         <th>Salary</th>
@@ -99,6 +102,7 @@
                                     </div>
                                 </td>
                                 <td class="rowOpenPlayerName"><a href='/player/?playerID=<%= playersOpenToTrade[i].id %>'><%= playersOpenToTrade[i].first_name %> <%= playersOpenToTrade[i].last_name %></a></td>
+                                <td class="rowOpenPlayerShortName"><%= playersOpenToTrade[i].short_name %></td>
                                 <td class="rowOpenPlayerRating"><%= playersOpenToTrade[i].rating_ovr %></td>
                                 <td class="rowOpenPlayerTeam"><%= playersOpenToTrade[i].team_name %></td>
                                 <td class="rowOpenPlayerSalary"><%= playersOpenToTrade[i].annual_salary %></td>

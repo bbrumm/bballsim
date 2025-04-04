@@ -1,0 +1,55 @@
+<%- include('header') -%>
+
+<%- include('links') -%>
+<body class="bodyStyle">
+    <h1>Best Players</h1>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-10">
+                <table class="dataTable">
+                    <thead>
+                        <th>Pos.</th>
+                        <th>Player Name</th>
+                        <th>Pos.</th>
+                        <th>Rating</th>
+                        <th>Team</th>
+                        <th>Games Played</th>
+                        <th>Overall Score</th>
+                        <th>PPG</th>
+                        <th>RPG</th>
+                        <th>APG</th>
+                        <th>SPG</th>
+                        <th>BPG</th>
+                    </thead>
+                    <tbody>
+                        <% for(var i=0; i < bestPlayers.length; i++) { %>
+                            <% if (chosenTeamID == bestPlayers[i].team_id) { %>
+                                <tr class="rowIsForChosenTeam">
+                            <% } else { %>
+                                <tr>
+                            <% } %>
+                                <td><%= i + 1 %></td>
+                                <td><a href='/player/?playerID=<%= bestPlayers[i].id %>' class="link-primary"><%= bestPlayers[i].first_name %> <%= bestPlayers[i].last_name %></a></td>
+                                <td><%= bestPlayers[i].short_name %></td>
+                                <td><%= bestPlayers[i].rating_ovr %></td>
+                                <td><a href='/team/?teamID=<%= bestPlayers[i].team_id %>'><%= bestPlayers[i].team_name %></a></td>
+                                <td><%= bestPlayers[i].games_played %></td>
+                                <td><%= bestPlayers[i].game_score %></td>
+                                <td><%= bestPlayers[i].ppg %></td>
+                                <td><%= bestPlayers[i].rpg %></td>
+                                <td><%= bestPlayers[i].apg %></td>
+                                <td><%= bestPlayers[i].spg %></td>
+                                <td><%= bestPlayers[i].bpg %></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    
+
+</body>
+</html>

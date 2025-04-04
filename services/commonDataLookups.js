@@ -24,6 +24,7 @@ module.exports.updateTeamForPlayer = updateTeamForPlayer;
 module.exports.recalculateTeamOverallRating = recalculateTeamOverallRating;
 module.exports.updateTeamBankBalanceAfterMatch = updateTeamBankBalanceAfterMatch;
 module.exports.lookupTradeHistory = lookupTradeHistory;
+module.exports.lookupBestPlayers = lookupBestPlayers;
 
 
 
@@ -462,9 +463,11 @@ async function lookupOpenToTradePlayers(teamID) {
         'p.last_name, ' +
         'p.rating_ovr, ' +
         'p.annual_salary, ' +
+        'po.short_name, ' +
         't.team_name  ' +
         'FROM player p ' +
         'INNER JOIN team t ON p.team_id = t.id ' +
+        'INNER JOIN player_position po ON p.position_id = po.id ' +
         'WHERE p.open_to_trade = TRUE ' +
         'AND t.id != $1;';
     try {
@@ -565,6 +568,52 @@ async function lookupTradeHistory() {
         'INNER JOIN team nt ON c.new_team_id = nt.id ' +
         'INNER JOIN player p ON c.player_id = p.id ' +
         'ORDER BY id DESC;'
+    try {
+        const res = await client.query(queryString);
+        return res.rows;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function lookupBestPlayers() {
+    queryString = 'SELECT ' +
+        'sub.id, ' +
+        'p.first_name, ' +
+        'p.last_name, ' +
+        't.id AS team_id, ' +
+        't.team_name, ' +
+        'p.rating_ovr, ' +
+        'po.short_name, ' +
+        'games_played, ' +
+        'ppg, ' +
+        'rpg, ' +
+        'apg, ' +
+        'spg, ' +
+        'bpg, ' +
+        'ppg + (0.5 * rpg) + spg + (0.7 * apg) + (0.7 * bpg) AS game_score ' +
+        'FROM ( ' +
+            'SELECT ' +
+            'p.id, ' +
+            'COUNT(DISTINCT s.id) AS games_played,  ' +
+            'SUM(s.points_scored) AS points_scored,  ' +
+            'ROUND(SUM(s.points_scored * 1.0) / COUNT(DISTINCT s.id), 1) AS ppg, ' +
+            'SUM(s.rebounds) AS rebounds,  ' +
+            'ROUND(SUM(s.rebounds * 1.0) / COUNT(DISTINCT s.id), 1) AS rpg, ' +
+            'SUM(s.assists) AS assists,  ' +
+            'ROUND(SUM(s.assists * 1.0) / COUNT(DISTINCT s.id), 1) AS apg, ' +
+            'SUM(s.steals) AS steals,  ' +
+            'ROUND(SUM(s.steals * 1.0) / COUNT(DISTINCT s.id), 1) AS spg, ' +
+            'SUM(s.blocks) AS blocks,  ' +
+            'ROUND(SUM(s.blocks * 1.0) / COUNT(DISTINCT s.id), 1) AS bpg ' +
+            'FROM player p  ' +
+            'INNER JOIN player_match_stats s ON p.id = s.player_id  ' +
+            'GROUP BY p.id ' +
+        ') sub ' +
+        'INNER JOIN player p ON p.id = sub.id ' +
+        'INNER JOIN team t ON p.team_id = t.id  ' +
+        'INNER JOIN player_position po ON p.position_id = po.id ' +
+        'ORDER BY game_score DESC LIMIT 20; ';
     try {
         const res = await client.query(queryString);
         return res.rows;
